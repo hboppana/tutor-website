@@ -43,7 +43,7 @@ export default function Home() {
             transition={{ delay: 0.2, duration: 0.8 }}
             className="text-4xl sm:text-6xl font-bold text-gray-900 mb-6"
           >
-            Hi, I'm Hemanshu Boppana
+            Hi, I&apos;m Hemanshu Boppana
           </motion.h1>
           <motion.p 
             initial={{ opacity: 0, y: 20 }}
