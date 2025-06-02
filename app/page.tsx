@@ -1,54 +1,55 @@
 'use client';
-import { motion } from 'framer-motion';
+import { motion, useScroll, useTransform } from 'framer-motion';
 import Link from "next/link";
-import { useRef } from 'react';
+import { useRef, useState, useEffect } from 'react';
+import Image from 'next/image';
 
 export default function Home() {
   const servicesRef = useRef<HTMLElement>(null);
+  const scheduleRef = useRef<HTMLElement>(null);
+  const [showScrollButton, setShowScrollButton] = useState(true);
+  const { scrollY } = useScroll();
+  const buttonOpacity = useTransform(scrollY, [0, 100], [1, 0]);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollPosition = window.scrollY;
+      setShowScrollButton(scrollPosition < 100);
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   const scrollToServices = () => {
-    servicesRef.current?.scrollIntoView({ behavior: 'smooth' });
+    servicesRef.current?.scrollIntoView({ 
+      behavior: 'smooth',
+      block: 'start'
+    });
+  };
+
+  const scrollToSchedule = () => {
+    scheduleRef.current?.scrollIntoView({ 
+      behavior: 'smooth',
+      block: 'start'
+    });
   };
 
   return (
     <div className="bg-white">
-      {/* Navbar */}
-      <nav className="bg-white shadow-md border-b border-blue-100">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between h-20 items-center">
-            <div className="flex-shrink-0">
-              <h1 className="text-3xl font-bold bg-gradient-to-r from-blue-600 to-blue-800 bg-clip-text text-transparent tracking-tight">
-                TutorPro
-              </h1>
-            </div>
-            <div className="hidden sm:flex sm:space-x-10">
-              <Link href="/" className="text-gray-700 hover:text-blue-600 px-3 py-2 text-base font-medium transition-colors duration-200">
-                Home
-              </Link>
-              <Link href="/services" className="text-gray-700 hover:text-blue-600 px-3 py-2 text-base font-medium transition-colors duration-200">
-                Schedule a Session
-              </Link>
-              <Link href="/tutors" className="text-gray-700 hover:text-blue-600 px-3 py-2 text-base font-medium transition-colors duration-200">
-                About My Services
-              </Link>
-            </div>
-          </div>
-        </div>
-      </nav>
-
       {/* Hero Section with Animation */}
       <motion.section 
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8 }}
-        className="min-h-screen flex items-center justify-center px-4"
+        className="min-h-screen flex items-center justify-center px-4 relative"
       >
         <div className="text-center max-w-3xl">
           <motion.h1 
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2, duration: 0.8 }}
-            className="text-4xl sm:text-6xl font-bold bg-gradient-to-r from-blue-600 to-blue-800 bg-clip-text text-transparent tracking-tight mb-6"
+            className="text-4xl sm:text-6xl font-bold bg-gradient-to-r from-blue-600 to-blue-800 bg-clip-text text-transparent tracking-tight mb-6 leading-tight"
           >
             Hi, I&apos;m Hemanshu Boppana
           </motion.h1>
@@ -56,7 +57,7 @@ export default function Home() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.4, duration: 0.8 }}
-            className="text-xl sm:text-2xl text-gray-600 mb-8"
+            className="text-xl sm:text-2xl text-gray-600 mb-8 leading-relaxed"
           >
             Your Personal Academic Guide
           </motion.p>
@@ -64,56 +65,60 @@ export default function Home() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.6, duration: 0.8 }}
-            className="flex flex-col items-center gap-4"
+            className="flex flex-col sm:flex-row items-center justify-center gap-6 mt-4 w-full max-w-2xl mx-auto"
           >
             <button 
               onClick={scrollToServices}
-              className="bg-blue-600 text-white px-8 py-3 rounded-md text-lg font-medium hover:bg-blue-700 transition-colors"
+              className="bg-blue-600 text-white px-10 py-4 rounded-lg text-lg font-semibold hover:bg-blue-700 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 min-w-[200px] w-full sm:w-auto"
             >
               View Services
             </button>
-            <motion.div
-              initial={{ opacity: 1 }}
-              whileInView={{ opacity: 0 }}
-              transition={{ duration: 0.5 }}
-              viewport={{ once: true }}
-              className="mt-8"
+            <button 
+              onClick={scrollToSchedule}
+              className="bg-white text-blue-600 border-2 border-blue-600 px-10 py-4 rounded-lg text-lg font-semibold hover:bg-blue-50 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 min-w-[200px] w-full sm:w-auto"
             >
-              <svg 
-                className="w-8 h-8 text-blue-600 animate-bounce" 
-                fill="none" 
-                stroke="currentColor" 
-                viewBox="0 0 24 24" 
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path 
-                  strokeLinecap="round" 
-                  strokeLinejoin="round" 
-                  strokeWidth={2} 
-                  d="M19 14l-7 7m0 0l-7-7m7 7V3" 
-                />
-              </svg>
-            </motion.div>
+              Schedule a Session
+            </button>
           </motion.div>
         </div>
+
+        {/* Animated Scroll Button */}
+        <motion.div
+          style={{ opacity: buttonOpacity }}
+          className="absolute bottom-8 left-1/2 transform -translate-x-1/2 cursor-pointer"
+          onClick={scrollToServices}
+          whileHover={{ y: 5 }}
+          whileTap={{ scale: 0.95 }}
+        >
+          <Image
+            src="/scroll-arrow.svg"
+            alt="Scroll down"
+            width={40}
+            height={40}
+            className="animate-bounce"
+          />
+        </motion.div>
       </motion.section>
+
+      {/* Separator */}
+      <div className="w-full h-1 bg-gradient-to-r from-blue-100 via-blue-300 to-blue-100" />
 
       {/* Services Section */}
       <motion.section 
         ref={servicesRef}
         id="services"
-        initial={{ opacity: 0 }}
-        whileInView={{ opacity: 1 }}
-        transition={{ duration: 0.8 }}
-        viewport={{ once: true }}
-        className="py-20 px-4"
+        initial={{ opacity: 0, y: 50 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8, ease: "easeOut" }}
+        viewport={{ once: false, margin: "-100px" }}
+        className="py-20 px-4 scroll-mt-20"
       >
         <div className="max-w-7xl mx-auto">
           <motion.h2 
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            viewport={{ once: true }}
+            transition={{ duration: 0.8, delay: 0.2 }}
+            viewport={{ once: false }}
             className="text-3xl sm:text-4xl font-bold text-center text-gray-900 mb-12"
           >
             My Services
@@ -121,10 +126,10 @@ export default function Home() {
           
           <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
             <motion.div 
-              initial={{ opacity: 0, x: -20 }}
+              initial={{ opacity: 0, x: -30 }}
               whileInView={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.8 }}
-              viewport={{ once: true }}
+              transition={{ duration: 0.8, delay: 0.3 }}
+              viewport={{ once: false }}
               className="bg-white p-8 rounded-xl shadow-lg border border-blue-100"
             >
               <h3 className="text-2xl font-bold text-gray-900 mb-4">General Instruction</h3>
@@ -140,10 +145,10 @@ export default function Home() {
             </motion.div>
 
             <motion.div 
-              initial={{ opacity: 0, x: 20 }}
+              initial={{ opacity: 0, x: 30 }}
               whileInView={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.8 }}
-              viewport={{ once: true }}
+              transition={{ duration: 0.8, delay: 0.4 }}
+              viewport={{ once: false }}
               className="bg-white p-8 rounded-xl shadow-lg border border-blue-100"
             >
               <h3 className="text-2xl font-bold text-gray-900 mb-4">SAT/ACT Prep</h3>
@@ -158,6 +163,45 @@ export default function Home() {
               </div>
             </motion.div>
           </div>
+        </div>
+      </motion.section>
+
+      {/* Separator */}
+      <div className="w-full h-1 bg-gradient-to-r from-blue-100 via-blue-300 to-blue-100" />
+
+      {/* Schedule Section */}
+      <motion.section 
+        ref={scheduleRef}
+        id="schedule"
+        initial={{ opacity: 0, y: 50 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8, ease: "easeOut" }}
+        viewport={{ once: false, margin: "-100px" }}
+        className="py-20 px-4 scroll-mt-20"
+      >
+        <div className="max-w-7xl mx-auto">
+          <motion.h2 
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.2 }}
+            viewport={{ once: false }}
+            className="text-3xl sm:text-4xl font-bold text-center text-gray-900 mb-12"
+          >
+            Schedule a Session
+          </motion.h2>
+          
+          <motion.div 
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.3 }}
+            viewport={{ once: false }}
+            className="max-w-4xl mx-auto bg-white p-8 rounded-xl shadow-lg border border-blue-100"
+          >
+            {/* Webhook placeholder */}
+            <div className="text-center text-gray-600">
+              Scheduling system coming soon...
+            </div>
+          </motion.div>
         </div>
       </motion.section>
     </div>
