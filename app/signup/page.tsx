@@ -1,66 +1,9 @@
 'use client';
 import { motion } from 'framer-motion';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
-
-interface ParticleProps {
-  x: number;
-  y: number;
-  size: number;
-  duration: number;
-  delay: number;
-}
-
-// Particle component
-const Particle = ({ x, y, size, duration, delay }: ParticleProps) => {
-  return (
-    <motion.div
-      className="absolute rounded-full bg-white/40 backdrop-blur-sm shadow-lg"
-      style={{
-        width: size,
-        height: size,
-        x,
-        y,
-      }}
-      animate={{
-        y: [y, y - 100],
-        opacity: [0, 0.8, 0],
-      }}
-      transition={{
-        duration,
-        delay,
-        repeat: Infinity,
-        ease: "linear",
-      }}
-    />
-  );
-};
-
-// Particle container component
-const ParticleContainer = () => {
-  const [particles, setParticles] = useState<ParticleProps[]>([]);
-
-  useEffect(() => {
-    const newParticles = Array.from({ length: 20 }, () => ({
-      x: Math.random() * window.innerWidth,
-      y: Math.random() * window.innerHeight,
-      size: Math.random() * 4 + 2,
-      duration: Math.random() * 3 + 2,
-      delay: Math.random() * 2,
-    }));
-    setParticles(newParticles);
-  }, []);
-
-  return (
-    <div className="absolute inset-0 overflow-hidden pointer-events-none">
-      {particles.map((particle, index) => (
-        <Particle key={index} {...particle} />
-      ))}
-    </div>
-  );
-};
 
 export default function SignUp() {
   const router = useRouter();
@@ -78,7 +21,7 @@ export default function SignUp() {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     // Handle form submission here
-    console.log(formData);
+    console.log('Signup form submitted:', formData);
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -87,11 +30,6 @@ export default function SignUp() {
       ...prev,
       [name]: value
     }));
-  };
-
-  const handleGoogleSignIn = () => {
-    // Handle Google sign in here
-    console.log('Google sign in clicked');
   };
 
   return (
