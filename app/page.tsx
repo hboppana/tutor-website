@@ -1,20 +1,20 @@
 'use client';
 import { motion, useScroll, useTransform } from 'framer-motion';
-import Link from "next/link";
-import { useRef, useState, useEffect } from 'react';
+import { useRef, useEffect } from 'react';
 import Image from 'next/image';
 
 export default function Home() {
   const servicesRef = useRef<HTMLElement>(null);
   const scheduleRef = useRef<HTMLElement>(null);
-  const [showScrollButton, setShowScrollButton] = useState(true);
   const { scrollY } = useScroll();
   const buttonOpacity = useTransform(scrollY, [0, 100], [1, 0]);
 
   useEffect(() => {
     const handleScroll = () => {
       const scrollPosition = window.scrollY;
-      setShowScrollButton(scrollPosition < 100);
+      if (scrollPosition > 100) {
+        // You can add any scroll-based logic here if needed
+      }
     };
 
     window.addEventListener('scroll', handleScroll);
