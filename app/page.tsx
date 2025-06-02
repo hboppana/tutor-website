@@ -1,6 +1,6 @@
 'use client';
 import { motion, useScroll, useTransform } from 'framer-motion';
-import { useRef, useEffect } from 'react';
+import { useRef, useEffect, useState } from 'react';
 import Image from 'next/image';
 
 interface ParticleProps {
@@ -38,13 +38,18 @@ const Particle = ({ x, y, size, duration, delay }: ParticleProps) => {
 
 // Particle container component
 const ParticleContainer = () => {
-  const particles = Array.from({ length: 20 }, () => ({
-    x: Math.random() * window.innerWidth,
-    y: Math.random() * window.innerHeight,
-    size: Math.random() * 4 + 2,
-    duration: Math.random() * 3 + 2,
-    delay: Math.random() * 2,
-  }));
+  const [particles, setParticles] = useState<ParticleProps[]>([]);
+
+  useEffect(() => {
+    const newParticles = Array.from({ length: 20 }, () => ({
+      x: Math.random() * window.innerWidth,
+      y: Math.random() * window.innerHeight,
+      size: Math.random() * 4 + 2,
+      duration: Math.random() * 3 + 2,
+      delay: Math.random() * 2,
+    }));
+    setParticles(newParticles);
+  }, []);
 
   return (
     <div className="absolute inset-0 overflow-hidden pointer-events-none">
