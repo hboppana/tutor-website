@@ -38,7 +38,7 @@ const Particle = ({ x, y, size, duration, delay }: ParticleProps) => {
 
 // Particle container component
 const ParticleContainer = () => {
-  const particles = Array.from({ length: 20 }, (_, i) => ({
+  const particles = Array.from({ length: 20 }, () => ({
     x: Math.random() * window.innerWidth,
     y: Math.random() * window.innerHeight,
     size: Math.random() * 4 + 2,
@@ -48,8 +48,8 @@ const ParticleContainer = () => {
 
   return (
     <div className="absolute inset-0 overflow-hidden pointer-events-none">
-      {particles.map((particle, i) => (
-        <Particle key={i} {...particle} />
+      {particles.map((particle, index) => (
+        <Particle key={index} {...particle} />
       ))}
     </div>
   );
