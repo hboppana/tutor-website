@@ -2,6 +2,7 @@
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { useRef, useEffect, useState } from 'react';
 import Image from 'next/image';
+import Link from 'next/link';
 
 interface ParticleProps {
   x: number;
@@ -132,7 +133,9 @@ export default function Home() {
             transition={{ delay: 0.2, duration: 0.5 }}
             className="px-6 py-2 bg-white/10 backdrop-blur-sm text-white font-semibold rounded-lg hover:bg-white/20 transition-colors border border-white/20"
           >
-            Log In
+            <Link href="/login" className="block w-full h-full">
+              Log In
+            </Link>
           </motion.button>
           <motion.button
             initial={{ opacity: 0, y: -20 }}
@@ -140,7 +143,9 @@ export default function Home() {
             transition={{ delay: 0.3, duration: 0.5 }}
             className="px-6 py-2 bg-white text-blue-600 rounded-lg font-semibold hover:bg-blue-50 transition-colors shadow-lg"
           >
-            Sign Up
+            <Link href="/signup" className="block w-full h-full">
+              Sign Up
+            </Link>
           </motion.button>
         </div>
 
