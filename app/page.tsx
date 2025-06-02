@@ -1,10 +1,17 @@
 'use client';
 import { motion } from 'framer-motion';
 import Link from "next/link";
+import { useRef } from 'react';
 
 export default function Home() {
+  const servicesRef = useRef<HTMLElement>(null);
+
+  const scrollToServices = () => {
+    servicesRef.current?.scrollIntoView({ behavior: 'smooth' });
+  };
+
   return (
-    <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white">
+    <div className="bg-white">
       {/* Navbar */}
       <nav className="bg-white shadow-md border-b border-blue-100">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -41,7 +48,7 @@ export default function Home() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2, duration: 0.8 }}
-            className="text-4xl sm:text-6xl font-bold text-gray-900 mb-6"
+            className="text-4xl sm:text-6xl font-bold bg-gradient-to-r from-blue-600 to-blue-800 bg-clip-text text-transparent tracking-tight mb-6"
           >
             Hi, I&apos;m Hemanshu Boppana
           </motion.h1>
@@ -57,17 +64,43 @@ export default function Home() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.6, duration: 0.8 }}
-            className="flex justify-center gap-4"
+            className="flex flex-col items-center gap-4"
           >
-            <a href="#services" className="bg-blue-600 text-white px-8 py-3 rounded-md text-lg font-medium hover:bg-blue-700 transition-colors">
+            <button 
+              onClick={scrollToServices}
+              className="bg-blue-600 text-white px-8 py-3 rounded-md text-lg font-medium hover:bg-blue-700 transition-colors"
+            >
               View Services
-            </a>
+            </button>
+            <motion.div
+              initial={{ opacity: 1 }}
+              whileInView={{ opacity: 0 }}
+              transition={{ duration: 0.5 }}
+              viewport={{ once: true }}
+              className="mt-8"
+            >
+              <svg 
+                className="w-8 h-8 text-blue-600 animate-bounce" 
+                fill="none" 
+                stroke="currentColor" 
+                viewBox="0 0 24 24" 
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path 
+                  strokeLinecap="round" 
+                  strokeLinejoin="round" 
+                  strokeWidth={2} 
+                  d="M19 14l-7 7m0 0l-7-7m7 7V3" 
+                />
+              </svg>
+            </motion.div>
           </motion.div>
         </div>
       </motion.section>
 
       {/* Services Section */}
       <motion.section 
+        ref={servicesRef}
         id="services"
         initial={{ opacity: 0 }}
         whileInView={{ opacity: 1 }}
