@@ -3,6 +3,23 @@ import { motion, useScroll, useTransform } from 'framer-motion';
 import { useRef, useEffect, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
+import React from 'react';
+
+// GridLines component
+const GridLines = () => {
+  return (
+    <div className="absolute inset-0 overflow-hidden pointer-events-none">
+      <div className="absolute inset-0" style={{
+        backgroundImage: `
+          linear-gradient(to right, rgba(0, 0, 0, 0.15) 1px, transparent 1px),
+          linear-gradient(to bottom, rgba(0, 0, 0, 0.15) 1px, transparent 1px)
+        `,
+        backgroundSize: '50px 50px',
+        maskImage: 'linear-gradient(to bottom, transparent, rgba(0, 0, 0, 0.8), transparent)'
+      }} />
+    </div>
+  );
+};
 
 interface ParticleProps {
   x: number;
@@ -16,7 +33,7 @@ interface ParticleProps {
 const Particle = ({ x, y, size, duration, delay }: ParticleProps) => {
   return (
     <motion.div
-      className="absolute rounded-full bg-white/40 backdrop-blur-sm shadow-lg"
+      className="absolute rounded-full bg-blue-600/60 backdrop-blur-sm shadow-lg"
       style={{
         width: size,
         height: size,
@@ -45,7 +62,7 @@ const ParticleContainer = () => {
     const newParticles = Array.from({ length: 20 }, () => ({
       x: Math.random() * window.innerWidth,
       y: Math.random() * window.innerHeight,
-      size: Math.random() * 4 + 2,
+      size: Math.random() * 8 + 4,
       duration: Math.random() * 3 + 2,
       delay: Math.random() * 2,
     }));
@@ -94,7 +111,10 @@ export default function Home() {
   };
 
   return (
-    <div className="relative min-h-screen bg-gradient-to-br from-blue-600 via-emerald-600 to-blue-800 overflow-hidden">
+    <div className="relative min-h-screen bg-white overflow-hidden font-['Open_Sans']">
+      {/* GridLines */}
+      <GridLines />
+      
       {/* Particles */}
       <ParticleContainer />
 
@@ -103,7 +123,7 @@ export default function Home() {
         <div className="absolute -bottom-1 left-0 right-0">
           <svg className="relative w-full h-[100px] animate-wave" viewBox="0 0 1440 320" preserveAspectRatio="none">
             <path
-              fill="rgba(255, 255, 255, 0.15)"
+              fill="rgba(59, 130, 246, 0.1)"
               d="M0,192L48,197.3C96,203,192,213,288,229.3C384,245,480,267,576,250.7C672,235,768,181,864,181.3C960,181,1056,235,1152,234.7C1248,235,1344,181,1392,154.7L1440,128L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"
             ></path>
           </svg>
@@ -111,7 +131,7 @@ export default function Home() {
         <div className="absolute -bottom-1 left-0 right-0">
           <svg className="relative w-full h-[100px] animate-wave-delayed" viewBox="0 0 1440 320" preserveAspectRatio="none">
             <path
-              fill="rgba(255, 255, 255, 0.1)"
+              fill="rgba(59, 130, 246, 0.05)"
               d="M0,64L48,80C96,96,192,128,288,128C384,128,480,96,576,90.7C672,85,768,107,864,128C960,149,1056,171,1152,165.3C1248,160,1344,128,1392,112L1440,96L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"
             ></path>
           </svg>
@@ -131,7 +151,7 @@ export default function Home() {
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2, duration: 0.5 }}
-            className="px-6 py-2 bg-white/10 backdrop-blur-sm text-white font-semibold rounded-lg hover:bg-white/20 transition-colors border border-white/20"
+            className="px-6 py-2 bg-blue-600 text-white font-normal rounded-lg hover:bg-blue-700 transition-colors"
           >
             <Link href="/login" className="block w-full h-full">
               Log In
@@ -141,7 +161,7 @@ export default function Home() {
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.3, duration: 0.5 }}
-            className="px-6 py-2 bg-white text-blue-600 rounded-lg font-semibold hover:bg-blue-50 transition-colors shadow-lg"
+            className="px-6 py-2 bg-white text-blue-600 rounded-lg font-normal hover:bg-blue-50 transition-colors shadow-lg border border-blue-600"
           >
             <Link href="/signup" className="block w-full h-full">
               Sign Up
@@ -160,9 +180,9 @@ export default function Home() {
               delay: 0.3,
               duration: 1.5
             }}
-            className="text-4xl sm:text-6xl font-bold text-white tracking-tight mb-6 leading-tight"
+            className="text-4xl sm:text-6xl font-normal tracking-tight mb-6 leading-tight"
           >
-            Hi, I&apos;m Hemanshu Boppana
+            Hi, I&apos;m <span className="bg-gradient-to-r from-blue-600 via-blue-500 to-blue-600 bg-clip-text text-transparent">Hemanshu Boppana</span>
           </motion.h1>
           <motion.p 
             initial={{ opacity: 0, x: 100 }}
@@ -174,7 +194,7 @@ export default function Home() {
               delay: 0.6,
               duration: 1.5
             }}
-            className="text-xl sm:text-2xl text-blue-100 mb-8 leading-relaxed"
+            className="text-xl sm:text-2xl text-gray-600 mb-8 leading-relaxed font-normal"
           >
             Your Personal Academic Guide
           </motion.p>
@@ -192,13 +212,13 @@ export default function Home() {
           >
             <button 
               onClick={scrollToServices}
-              className="bg-white text-blue-600 px-10 py-4 rounded-lg text-lg font-semibold hover:bg-blue-50 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 min-w-[200px] w-full sm:w-auto"
+              className="bg-blue-600 text-white px-10 py-4 rounded-lg text-lg font-normal hover:bg-blue-700 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 min-w-[200px] w-full sm:w-auto"
             >
               View Services
             </button>
             <button 
               onClick={scrollToSchedule}
-              className="bg-transparent text-white border-2 border-white px-10 py-4 rounded-lg text-lg font-semibold hover:bg-white/10 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 min-w-[200px] w-full sm:w-auto"
+              className="bg-white text-blue-600 border-2 border-blue-600 px-10 py-4 rounded-lg text-lg font-normal hover:bg-blue-50 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 min-w-[200px] w-full sm:w-auto"
             >
               Schedule a Session
             </button>
@@ -279,7 +299,7 @@ export default function Home() {
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.2 }}
             viewport={{ once: false }}
-            className="text-3xl sm:text-4xl font-bold text-center text-white mb-12"
+            className="text-3xl sm:text-4xl font-normal text-center text-blue-600 mb-12"
           >
             My Services
           </motion.h2>
@@ -290,15 +310,15 @@ export default function Home() {
               whileInView={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.8, delay: 0.3 }}
               viewport={{ once: false }}
-              className="bg-white/10 backdrop-blur-sm p-8 rounded-xl shadow-lg border border-white/20"
+              className="bg-white p-8 rounded-xl shadow-lg border border-gray-200"
             >
-              <h3 className="text-2xl font-bold text-white mb-4">General Instruction</h3>
-              <p className="text-blue-100 mb-6">
+              <h3 className="text-2xl font-normal text-blue-600 mb-4">General Instruction</h3>
+              <p className="text-gray-600 mb-6 font-normal">
                 Comprehensive tutoring sessions covering various subjects and topics. Perfect for students seeking general academic support.
               </p>
               <div className="flex items-center justify-between">
-                <span className="text-2xl font-bold text-white">$30/hr</span>
-                <button className="bg-white text-blue-600 px-6 py-2 rounded-md hover:bg-blue-50 transition-colors">
+                <span className="text-2xl font-normal text-blue-600">$30/hr</span>
+                <button className="bg-blue-600 text-white px-6 py-2 rounded-md hover:bg-blue-700 transition-colors font-normal">
                   Book Now
                 </button>
               </div>
@@ -309,15 +329,15 @@ export default function Home() {
               whileInView={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.8, delay: 0.4 }}
               viewport={{ once: false }}
-              className="bg-white/10 backdrop-blur-sm p-8 rounded-xl shadow-lg border border-white/20"
+              className="bg-white p-8 rounded-xl shadow-lg border border-gray-200"
             >
-              <h3 className="text-2xl font-bold text-white mb-4">SAT/ACT Prep</h3>
-              <p className="text-blue-100 mb-6">
+              <h3 className="text-2xl font-normal text-blue-600 mb-4">SAT/ACT Prep</h3>
+              <p className="text-gray-600 mb-6 font-normal">
                 Specialized test preparation sessions focusing on SAT and ACT strategies, practice tests, and comprehensive review.
               </p>
               <div className="flex items-center justify-between">
-                <span className="text-2xl font-bold text-white">$35/hr</span>
-                <button className="bg-white text-blue-600 px-6 py-2 rounded-md hover:bg-blue-50 transition-colors">
+                <span className="text-2xl font-normal text-blue-600">$35/hr</span>
+                <button className="bg-blue-600 text-white px-6 py-2 rounded-md hover:bg-blue-700 transition-colors font-normal">
                   Book Now
                 </button>
               </div>
