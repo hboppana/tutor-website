@@ -33,7 +33,7 @@ interface ParticleProps {
 const Particle = ({ x, y, size, duration, delay }: ParticleProps) => {
   return (
     <motion.div
-      className="absolute rounded-full bg-blue-600/60 backdrop-blur-sm shadow-lg"
+      className="absolute rounded-full bg-white/60 backdrop-blur-sm shadow-lg"
       style={{
         width: size,
         height: size,
@@ -111,7 +111,7 @@ export default function Home() {
   };
 
   return (
-    <div className="relative min-h-screen bg-white overflow-hidden font-['Open_Sans']">
+    <div className="relative min-h-screen bg-gradient-to-br from-blue-600 via-blue-400 to-blue-600 overflow-hidden font-['Poppins']">
       {/* GridLines */}
       <GridLines />
       
@@ -151,7 +151,7 @@ export default function Home() {
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2, duration: 0.5 }}
-            className="px-6 py-2 bg-blue-600 text-white font-normal rounded-lg hover:bg-blue-700 transition-colors"
+            className="btn-primary"
           >
             <Link href="/login" className="block w-full h-full">
               Log In
@@ -161,7 +161,7 @@ export default function Home() {
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.3, duration: 0.5 }}
-            className="px-6 py-2 bg-white text-blue-600 rounded-lg font-normal hover:bg-blue-50 transition-colors shadow-lg border border-blue-600"
+            className="btn-secondary"
           >
             <Link href="/signup" className="block w-full h-full">
               Sign Up
@@ -182,7 +182,7 @@ export default function Home() {
             }}
             className="text-4xl sm:text-6xl font-normal tracking-tight mb-6 leading-tight"
           >
-            Hi, I&apos;m <span className="bg-gradient-to-r from-blue-600 via-blue-500 to-blue-600 bg-clip-text text-transparent">Hemanshu Boppana</span>
+            <span className="text-white font-semibold tracking-wide">Hi, I&apos;m  Hemanshu Boppana</span>
           </motion.h1>
           <motion.p 
             initial={{ opacity: 0, x: 100 }}
@@ -194,7 +194,7 @@ export default function Home() {
               delay: 0.6,
               duration: 1.5
             }}
-            className="text-xl sm:text-2xl text-gray-600 mb-8 leading-relaxed font-normal"
+            className="text-xl sm:text-2xl text-blue-100 mb-8 leading-relaxed font-normal italic"
           >
             Your Personal Academic Guide
           </motion.p>
@@ -212,13 +212,13 @@ export default function Home() {
           >
             <button 
               onClick={scrollToServices}
-              className="bg-blue-600 text-white px-10 py-4 rounded-lg text-lg font-normal hover:bg-blue-700 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 min-w-[200px] w-full sm:w-auto"
+              className="btn-primary min-w-[200px] w-full sm:w-auto"
             >
               View Services
             </button>
             <button 
               onClick={scrollToSchedule}
-              className="bg-white text-blue-600 border-2 border-blue-600 px-10 py-4 rounded-lg text-lg font-normal hover:bg-blue-50 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 min-w-[200px] w-full sm:w-auto"
+              className="btn-secondary min-w-[200px] w-full sm:w-auto"
             >
               Schedule a Session
             </button>
@@ -239,7 +239,7 @@ export default function Home() {
               alt="Scroll down"
               width={40}
               height={40}
-              className="animate-bounce invert"
+              className="animate-bounce text-white"
             />
           </div>
         </motion.div>
@@ -263,7 +263,7 @@ export default function Home() {
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.2 }}
             viewport={{ once: false }}
-            className="text-3xl sm:text-4xl font-bold text-center text-gray-900 mb-12"
+            className="text-3xl sm:text-4xl font-normal text-center text-white mb-12"
           >
             About Me
           </motion.h2>
@@ -273,7 +273,7 @@ export default function Home() {
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.3 }}
             viewport={{ once: false }}
-            className="max-w-4xl mx-auto bg-white p-8 rounded-xl shadow-lg border border-blue-100"
+            className="max-w-4xl mx-auto glass-card"
           >
             {/* Content will be added later */}
           </motion.div>
@@ -299,7 +299,7 @@ export default function Home() {
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.2 }}
             viewport={{ once: false }}
-            className="text-3xl sm:text-4xl font-normal text-center text-blue-600 mb-12"
+            className="text-3xl sm:text-4xl font-normal text-center text-white mb-12"
           >
             My Services
           </motion.h2>
@@ -310,15 +310,15 @@ export default function Home() {
               whileInView={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.8, delay: 0.3 }}
               viewport={{ once: false }}
-              className="bg-white p-8 rounded-xl shadow-lg border border-gray-200"
+              className="glass-card"
             >
-              <h3 className="text-2xl font-normal text-blue-600 mb-4">General Instruction</h3>
-              <p className="text-gray-600 mb-6 font-normal">
+              <h3 className="text-2xl font-normal text-white mb-4">General Instruction</h3>
+              <p className="text-blue-100 mb-6 font-normal">
                 Comprehensive tutoring sessions covering various subjects and topics. Perfect for students seeking general academic support.
               </p>
               <div className="flex items-center justify-between">
-                <span className="text-2xl font-normal text-blue-600">$30/hr</span>
-                <button className="bg-blue-600 text-white px-6 py-2 rounded-md hover:bg-blue-700 transition-colors font-normal">
+                <span className="text-2xl font-normal text-white">$30/hr</span>
+                <button className="btn-primary">
                   Book Now
                 </button>
               </div>
@@ -329,15 +329,15 @@ export default function Home() {
               whileInView={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.8, delay: 0.4 }}
               viewport={{ once: false }}
-              className="bg-white p-8 rounded-xl shadow-lg border border-gray-200"
+              className="glass-card"
             >
-              <h3 className="text-2xl font-normal text-blue-600 mb-4">SAT/ACT Prep</h3>
-              <p className="text-gray-600 mb-6 font-normal">
+              <h3 className="text-2xl font-normal text-white mb-4">SAT/ACT Prep</h3>
+              <p className="text-blue-100 mb-6 font-normal">
                 Specialized test preparation sessions focusing on SAT and ACT strategies, practice tests, and comprehensive review.
               </p>
               <div className="flex items-center justify-between">
-                <span className="text-2xl font-normal text-blue-600">$35/hr</span>
-                <button className="bg-blue-600 text-white px-6 py-2 rounded-md hover:bg-blue-700 transition-colors font-normal">
+                <span className="text-2xl font-normal text-white">$35/hr</span>
+                <button className="btn-primary">
                   Book Now
                 </button>
               </div>
@@ -365,7 +365,7 @@ export default function Home() {
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.2 }}
             viewport={{ once: false }}
-            className="text-3xl sm:text-4xl font-bold text-center text-white mb-12"
+            className="text-3xl sm:text-4xl font-normal text-center text-white mb-12"
           >
             Schedule a Session
           </motion.h2>
@@ -375,7 +375,7 @@ export default function Home() {
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.3 }}
             viewport={{ once: false }}
-            className="max-w-4xl mx-auto bg-white/10 backdrop-blur-sm p-8 rounded-xl shadow-lg border border-white/20"
+            className="max-w-4xl mx-auto glass-card"
           >
             {/* Webhook placeholder */}
             <div className="text-center text-blue-100">
