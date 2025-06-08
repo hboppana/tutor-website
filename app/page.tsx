@@ -99,7 +99,7 @@ export default function Home() {
       image: "/testimonial2.jpg"
     },
     {
-      name: "Emily R.",
+      name: "Uma R.",
       role: "AP Student",
       text: "Thanks to Hemanshu's guidance, I got a 5 on my AP Calculus exam. His teaching style is engaging and effective!",
       image: "/testimonial3.jpg"
