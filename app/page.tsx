@@ -202,8 +202,8 @@ export default function Home() {
     },
     {
       name: "Uma R.",
-      role: "AP Student",
-      text: "Thanks to Hemanshu's guidance, I got a 5 on my AP Calculus exam. His teaching style is engaging and effective!",
+      role: "Former high school student",
+      text: "Working with Hemanshu throughout my Honors Biology course in high school was a game changer. He explained complex concepts in a way that was easy to understand. Because of this, I was able to improve by a letter grade in that class!",
       image: "/testimonial3.jpg"
     }
   ];
