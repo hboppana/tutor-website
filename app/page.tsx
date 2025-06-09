@@ -80,7 +80,6 @@ const ParticleContainer = () => {
 
 export default function Home() {
   const servicesRef = useRef<HTMLElement>(null);
-  const scheduleRef = useRef<HTMLElement>(null);
   const { scrollY } = useScroll();
   const buttonOpacity = useTransform(scrollY, [0, 100], [1, 0]);
   const [currentTestimonial, setCurrentTestimonial] = useState(0);
