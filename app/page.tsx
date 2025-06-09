@@ -1,6 +1,6 @@
 'use client';
-import { motion, useScroll, useTransform } from 'framer-motion';
-import { useRef, useEffect, useState } from 'react';
+import { motion, useScroll, useTransform, AnimatePresence } from 'framer-motion';
+import { useRef, useEffect, useState, TouchEvent } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import React from 'react';
@@ -78,6 +78,110 @@ const ParticleContainer = () => {
   );
 };
 
+interface Testimonial {
+  name: string;
+  role: string;
+  text: string;
+  image: string;
+}
+
+// Testimonials Carousel Component
+const TestimonialsCarousel = ({ testimonials }: { testimonials: Testimonial[] }) => {
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [touchStart, setTouchStart] = useState<number | null>(null);
+  const [touchEnd, setTouchEnd] = useState<number | null>(null);
+  const minSwipeDistance = 50;
+
+  const onTouchStart = (e: TouchEvent) => {
+    setTouchEnd(null);
+    setTouchStart(e.targetTouches[0].clientX);
+  };
+
+  const onTouchMove = (e: TouchEvent) => {
+    setTouchEnd(e.targetTouches[0].clientX);
+  };
+
+  const onTouchEnd = () => {
+    if (!touchStart || !touchEnd) return;
+    const distance = touchStart - touchEnd;
+    const isLeftSwipe = distance > minSwipeDistance;
+    const isRightSwipe = distance < -minSwipeDistance;
+
+    if (isLeftSwipe) {
+      setCurrentIndex((prev) => (prev + 1) % testimonials.length);
+    }
+    if (isRightSwipe) {
+      setCurrentIndex((prev) => (prev - 1 + testimonials.length) % testimonials.length);
+    }
+  };
+
+  return (
+    <div 
+      className="relative w-full overflow-hidden"
+      onTouchStart={onTouchStart}
+      onTouchMove={onTouchMove}
+      onTouchEnd={onTouchEnd}
+    >
+      <div className="flex items-center justify-center">
+        <button
+          onClick={() => setCurrentIndex((prev) => (prev - 1 + testimonials.length) % testimonials.length)}
+          className="hidden sm:flex items-center justify-center w-10 h-10 rounded-full bg-white/10 backdrop-blur-sm text-white hover:bg-white/20 transition-all"
+        >
+          ←
+        </button>
+        
+        <div className="relative w-full max-w-2xl mx-4">
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={currentIndex}
+              initial={{ opacity: 0, x: 100 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: -100 }}
+              transition={{ duration: 0.3 }}
+              className="glass-card p-6 sm:p-8"
+            >
+              <div className="flex flex-col items-center text-center">
+                <div className="w-20 h-20 mb-4 rounded-full bg-blue-200/20 flex items-center justify-center text-2xl text-white">
+                  {testimonials[currentIndex].name[0]}
+                </div>
+                <h3 className="text-xl font-semibold text-white mb-1">
+                  {testimonials[currentIndex].name}
+                </h3>
+                <p className="text-blue-100 mb-4">
+                  {testimonials[currentIndex].role}
+                </p>
+                <p className="text-white text-lg italic">
+                  &quot;{testimonials[currentIndex].text}&quot;
+                </p>
+              </div>
+            </motion.div>
+          </AnimatePresence>
+        </div>
+
+        <button
+          onClick={() => setCurrentIndex((prev) => (prev + 1) % testimonials.length)}
+          className="hidden sm:flex items-center justify-center w-10 h-10 rounded-full bg-white/10 backdrop-blur-sm text-white hover:bg-white/20 transition-all"
+        >
+          →
+        </button>
+      </div>
+
+      {/* Mobile Swipe Indicator */}
+      <div className="sm:hidden flex justify-center mt-4 gap-2">
+        {testimonials.map((_: Testimonial, index: number) => (
+          <button
+            key={index}
+            onClick={() => setCurrentIndex(index)}
+            className={`w-2 h-2 rounded-full transition-all ${
+              index === currentIndex ? 'bg-white w-4' : 'bg-white/50'
+            }`}
+          />
+        ))}
+      </div>
+    </div>
+  );
+};
+
 export default function Home() {
   const servicesRef = useRef<HTMLElement>(null);
   const { scrollY } = useScroll();
@@ -94,7 +198,7 @@ export default function Home() {
     {
       name: "Prajwal N.",
       role: "High School Senior",
-      text: "The way Hemanshu breaks down complex concepts into understandable parts is incredible. He's helped me maintain a 4.0 in my first semester!",
+      text: "The way Hemanshu helped me strategize for the SAT was incredible. He's helped me boost my score by 100 points in just a week and a half!",
       image: "/testimonial2.jpg"
     },
     {
@@ -407,99 +511,14 @@ export default function Home() {
       <div className="w-full h-1 bg-gradient-to-r from-blue-100 via-blue-300 to-blue-100" />
 
       {/* Testimonials Section */}
-      <motion.section 
-        id="testimonials"
-        initial={{ opacity: 0, y: 50 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8, ease: "easeOut" }}
-        viewport={{ once: false, margin: "-100px" }}
-        className="py-20 px-4"
-      >
+      <section className="py-16 px-4 sm:px-6 relative z-10">
         <div className="max-w-7xl mx-auto">
-          <motion.h2 
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.2 }}
-            viewport={{ once: false }}
-            className="text-3xl sm:text-4xl font-normal text-center text-white mb-12"
-          >
-            Student Success Stories
-          </motion.h2>
-          
-          <div className="max-w-4xl mx-auto">
-            <motion.div 
-              className="relative overflow-hidden"
-              initial={{ opacity: 0 }}
-              whileInView={{ opacity: 1 }}
-              transition={{ duration: 0.8 }}
-            >
-              <div className="relative">
-                <div className="flex transition-transform duration-500 ease-in-out">
-                  {testimonials.map((testimonial, index) => (
-                    <motion.div
-                      key={index}
-                      className="w-full flex-shrink-0 px-4"
-                      initial={{ opacity: 0, x: 100 }}
-                      whileInView={{ opacity: 1, x: 0 }}
-                      transition={{ duration: 0.5, delay: index * 0.2 }}
-                      style={{
-                        transform: `translateX(-${currentTestimonial * 100}%)`,
-                        display: index === currentTestimonial ? 'block' : 'none'
-                      }}
-                    >
-                      <div className="glass-card p-8 rounded-2xl">
-                        <div className="flex items-center mb-6">
-                          <div className="w-16 h-16 rounded-full bg-blue-200/20 flex items-center justify-center text-2xl">
-                            {testimonial.name[0]}
-                          </div>
-                          <div className="ml-4">
-                            <h3 className="text-xl font-medium text-white">{testimonial.name}</h3>
-                            <p className="text-blue-200">{testimonial.role}</p>
-                          </div>
-                        </div>
-                        <p className="text-white text-lg italic">&quot;{testimonial.text}&quot;</p>
-                      </div>
-                    </motion.div>
-                  ))}
-                </div>
-
-                {/* Navigation Arrows */}
-                <div className="absolute -left-12 -right-12 top-1/2 -translate-y-1/2 flex items-center justify-between pointer-events-none">
-                  <button
-                    onClick={prevTestimonial}
-                    className="p-3 rounded-full bg-white/10 backdrop-blur-sm hover:bg-white/20 transition-colors pointer-events-auto shadow-lg"
-                  >
-                    <svg className="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-                    </svg>
-                  </button>
-                  <button
-                    onClick={nextTestimonial}
-                    className="p-3 rounded-full bg-white/10 backdrop-blur-sm hover:bg-white/20 transition-colors pointer-events-auto shadow-lg"
-                  >
-                    <svg className="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                    </svg>
-                  </button>
-                </div>
-                
-                {/* Navigation Dots */}
-                <div className="flex justify-center mt-8 space-x-2">
-                  {testimonials.map((_, index) => (
-                    <button
-                      key={index}
-                      className={`w-3 h-3 rounded-full transition-colors ${
-                        index === currentTestimonial ? 'bg-white' : 'bg-white/30 hover:bg-white/50'
-                      }`}
-                      onClick={() => goToTestimonial(index)}
-                    />
-                  ))}
-                </div>
-              </div>
-            </motion.div>
-          </div>
+          <h2 className="text-3xl sm:text-4xl font-semibold text-white text-center mb-12">
+            What My Students Say
+          </h2>
+          <TestimonialsCarousel testimonials={testimonials} />
         </div>
-      </motion.section>
+      </section>
     </div>
   );
 }
