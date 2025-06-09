@@ -169,10 +169,10 @@ export default function Home() {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8 }}
-        className="min-h-screen flex items-center justify-center px-4 relative z-10"
+        className="min-h-screen flex items-center justify-center px-4 sm:px-6 relative z-10"
       >
         {/* Login/Signup Buttons */}
-        <div className="absolute top-8 right-8 flex gap-4">
+        <div className="absolute top-4 sm:top-8 right-4 sm:right-8 flex gap-2 sm:gap-4">
           <motion.button
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -195,9 +195,9 @@ export default function Home() {
           </motion.button>
         </div>
 
-        <div className="flex flex-col md:flex-row items-center md:items-start justify-center md:justify-between w-full max-w-7xl mx-auto">
+        <div className="flex flex-col md:flex-row items-center md:items-start justify-center md:justify-between w-full max-w-7xl mx-auto pt-16 sm:pt-0">
           {/* Left Side: Intro */}
-          <div className="text-center md:text-left md:w-1/2 mb-12 md:mb-0">
+          <div className="text-center md:text-left md:w-1/2 mb-8 sm:mb-12 md:mb-0">
             <motion.h1 
               initial={{ opacity: 0, x: -100 }}
               animate={{ opacity: 1, x: 0 }}
@@ -208,7 +208,7 @@ export default function Home() {
                 delay: 0.3,
                 duration: 1.5
               }}
-              className="text-4xl sm:text-6xl font-normal tracking-tight mb-6 leading-tight"
+              className="text-3xl sm:text-4xl md:text-6xl font-normal tracking-tight mb-4 sm:mb-6 leading-tight"
             >
               <span className="text-blue-950 font-semibold tracking-wide">Hi, I&apos;m Hemanshu Boppana</span>
             </motion.h1>
@@ -222,7 +222,7 @@ export default function Home() {
                 delay: 0.6,
                 duration: 1.5
               }}
-              className="text-xl sm:text-2xl text-white mb-8 leading-relaxed font-normal italic"
+              className="text-lg sm:text-xl md:text-2xl text-white mb-6 sm:mb-8 leading-relaxed font-normal italic"
             >
               Your Personal Academic Guide
             </motion.p>
@@ -236,11 +236,11 @@ export default function Home() {
                 delay: 0.9,
                 duration: 1.5
               }}
-              className="flex flex-col sm:flex-row items-center justify-center md:justify-start gap-6 mt-4 w-full max-w-2xl mx-auto md:mx-0"
+              className="flex flex-col sm:flex-row items-center justify-center md:justify-start gap-4 sm:gap-6 mt-4 w-full max-w-2xl mx-auto md:mx-0"
             >
               <button 
                 onClick={scrollToServices}
-                className="btn-primary min-w-[200px] w-full sm:w-auto"
+                className="btn-primary w-full sm:w-auto min-w-[200px]"
               >
                 View Services
               </button>
