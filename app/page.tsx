@@ -186,7 +186,6 @@ export default function Home() {
   const servicesRef = useRef<HTMLElement>(null);
   const { scrollY } = useScroll();
   const buttonOpacity = useTransform(scrollY, [0, 100], [1, 0]);
-  const [currentTestimonial, setCurrentTestimonial] = useState(0);
 
   const testimonials = [
     {
@@ -208,18 +207,6 @@ export default function Home() {
       image: "/testimonial3.jpg"
     }
   ];
-
-  const nextTestimonial = () => {
-    setCurrentTestimonial((prev) => (prev + 1) % testimonials.length);
-  };
-
-  const prevTestimonial = () => {
-    setCurrentTestimonial((prev) => (prev - 1 + testimonials.length) % testimonials.length);
-  };
-
-  const goToTestimonial = (index: number) => {
-    setCurrentTestimonial(index);
-  };
 
   useEffect(() => {
     const handleScroll = () => {
@@ -514,7 +501,7 @@ export default function Home() {
       <section className="py-16 px-4 sm:px-6 relative z-10">
         <div className="max-w-7xl mx-auto">
           <h2 className="text-3xl sm:text-4xl font-semibold text-white text-center mb-12">
-            What My Students Say
+            User Testimonials
           </h2>
           <TestimonialsCarousel testimonials={testimonials} />
         </div>
