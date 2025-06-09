@@ -137,13 +137,6 @@ export default function Home() {
     });
   };
 
-  const scrollToSchedule = () => {
-    scheduleRef.current?.scrollIntoView({ 
-      behavior: 'smooth',
-      block: 'start'
-    });
-  };
-
   return (
     <div className="relative min-h-screen bg-gradient-to-br from-blue-600 via-blue-400 to-blue-600 overflow-hidden font-['Poppins']">
       {/* GridLines */}
@@ -465,7 +458,7 @@ export default function Home() {
                             <p className="text-blue-200">{testimonial.role}</p>
                           </div>
                         </div>
-                        <p className="text-white text-lg italic">"{testimonial.text}"</p>
+                        <p className="text-white text-lg italic">&quot;{testimonial.text}&quot;</p>
                       </div>
                     </motion.div>
                   ))}
