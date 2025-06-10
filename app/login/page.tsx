@@ -38,8 +38,10 @@ export default function LoginPage() {
     try {
       const supabase = createClient();
       const redirectTo = `${window.location.origin}/auth/callback`;
-      console.log('Redirect URL:', redirectTo); // Log the redirect URL
-      const { error } = await supabase.auth.signInWithOAuth({
+      console.log('Starting Google sign in...');
+      console.log('Current origin:', window.location.origin);
+      console.log('Redirect URL:', redirectTo);
+      const { data, error } = await supabase.auth.signInWithOAuth({
         provider: 'google',
         options: {
           redirectTo,
@@ -49,10 +51,14 @@ export default function LoginPage() {
           },
         },
       });
-      if (error) throw error;
+      if (error) {
+        console.error('OAuth error:', error);
+        throw error;
+      }
+      console.log('OAuth response:', data);
     } catch (error) {
       console.error('Error signing in with Google:', error);
-      // Handle error (you might want to show an error message to the user)
+      alert('Failed to sign in with Google. Please check the console for details.');
     } finally {
       setIsLoading(false);
     }
