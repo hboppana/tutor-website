@@ -52,10 +52,12 @@ export default function SignUp() {
     setIsLoading(true);
     try {
       const supabase = createClient();
-      const redirectTo = `${window.location.origin}/auth/callback`;
-      console.log('Current origin:', window.location.origin);
+      // Use the current origin for the redirect
+      const redirectTo = process.env.NODE_ENV === 'production' 
+        ? 'https://tutor-website-beta-six.vercel.app/auth/callback'
+        : `${window.location.origin}/auth/callback`;
       console.log('Redirect URL:', redirectTo);
-      const { data, error } = await supabase.auth.signInWithOAuth({
+      const { error } = await supabase.auth.signInWithOAuth({
         provider: 'google',
         options: {
           redirectTo,
@@ -65,18 +67,10 @@ export default function SignUp() {
           },
         },
       });
-      if (error) {
-        console.error('OAuth error details:', {
-          message: error.message,
-          status: error.status,
-          name: error.name
-        });
-        throw error;
-      }
-      console.log('OAuth response:', data);
+      if (error) throw error;
     } catch (error) {
       console.error('Error signing up with Google:', error);
-      alert('Failed to sign up with Google. Please check the console for details.');
+      // Handle error (you might want to show an error message to the user)
     } finally {
       setIsLoading(false);
     }
