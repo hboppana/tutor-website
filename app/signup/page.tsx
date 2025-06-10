@@ -52,10 +52,10 @@ export default function SignUp() {
     setIsLoading(true);
     try {
       const supabase = createClient();
-      // Use the current origin for the redirect
       const redirectTo = `${window.location.origin}/auth/callback`;
-      console.log('Redirect URL:', redirectTo); // Log the redirect URL for debugging
-      const { error } = await supabase.auth.signInWithOAuth({
+      console.log('Current origin:', window.location.origin);
+      console.log('Redirect URL:', redirectTo);
+      const { data, error } = await supabase.auth.signInWithOAuth({
         provider: 'google',
         options: {
           redirectTo,
@@ -66,13 +66,17 @@ export default function SignUp() {
         },
       });
       if (error) {
-        console.error('OAuth error:', error);
+        console.error('OAuth error details:', {
+          message: error.message,
+          status: error.status,
+          name: error.name
+        });
         throw error;
       }
+      console.log('OAuth response:', data);
     } catch (error) {
       console.error('Error signing up with Google:', error);
-      // Show error to user
-      alert('Failed to sign up with Google. Please try again.');
+      alert('Failed to sign up with Google. Please check the console for details.');
     } finally {
       setIsLoading(false);
     }
