@@ -15,6 +15,8 @@ export default function SignUp() {
     confirmPassword: ''
   });
   const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [showConfirmation, setShowConfirmation] = useState(false);
 
   const handleBack = () => {
     router.push('/');
@@ -22,8 +24,9 @@ export default function SignUp() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setError(null);
     if (formData.password !== formData.confirmPassword) {
-      // Handle password mismatch
+      setError('Passwords do not match');
       return;
     }
     setIsLoading(true);
@@ -38,11 +41,20 @@ export default function SignUp() {
           },
         },
       });
-      if (error) throw error;
-      router.push('/dashboard'); // Redirect to dashboard after successful signup
+      if (error) {
+        if (error.message.includes('already registered') || error.message.includes('already in use')) {
+          setError('This email is already registered. Please try logging in instead.');
+        } else if (error.message.includes('password')) {
+          setError('Password must be at least 6 characters long');
+        } else {
+          setError(error.message);
+        }
+        return;
+      }
+      setShowConfirmation(true);
     } catch (error) {
       console.error('Error signing up:', error);
-      // Handle error (you might want to show an error message to the user)
+      setError('An unexpected error occurred. Please try again.');
     } finally {
       setIsLoading(false);
     }
@@ -50,6 +62,7 @@ export default function SignUp() {
 
   const handleGoogleSignUp = async () => {
     setIsLoading(true);
+    setError(null);
     try {
       const supabase = createClient();
       const redirectTo = `${window.location.origin}/auth/callback`;
@@ -67,7 +80,7 @@ export default function SignUp() {
       if (error) throw error;
     } catch (error) {
       console.error('Error signing up with Google:', error);
-      // Handle error (you might want to show an error message to the user)
+      setError('An error occurred. Please try again later.');
     } finally {
       setIsLoading(false);
     }
@@ -139,6 +152,42 @@ export default function SignUp() {
 
           <h1 className="auth-title">Create Account</h1>
           <p className="auth-subtitle">Join me on your learning journey</p>
+          
+          {error && (
+            <div className="mb-6 p-4 bg-red-500/10 border border-red-500/20 rounded-lg">
+              <p className="text-red-200 text-sm">{error}</p>
+            </div>
+          )}
+
+          {showConfirmation && (
+            <motion.div
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="mb-6 p-4 bg-green-500/10 border border-green-500/20 rounded-lg relative"
+            >
+              <button
+                onClick={() => setShowConfirmation(false)}
+                className="absolute top-2 right-2 text-green-200 hover:text-white transition-colors"
+                type="button"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-5 w-5"
+                  viewBox="0 0 20 20"
+                  fill="currentColor"
+                >
+                  <path
+                    fillRule="evenodd"
+                    d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                    clipRule="evenodd"
+                  />
+                </svg>
+              </button>
+              <p className="text-green-200 text-sm pr-6">
+                Please check your email to verify your account. You can close this message and return to login.
+              </p>
+            </motion.div>
+          )}
           
           <form onSubmit={handleSubmit} className="space-y-6 relative z-50">
             <div>

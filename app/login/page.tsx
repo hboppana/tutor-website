@@ -13,9 +13,11 @@ export default function LoginPage() {
     password: '',
   });
   const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setError(null);
     setIsLoading(true);
     try {
       const supabase = createClient();
@@ -23,11 +25,18 @@ export default function LoginPage() {
         email: formData.email,
         password: formData.password,
       });
-      if (error) throw error;
-      router.push('/dashboard'); // Redirect to dashboard after successful login
+      if (error) {
+        if (error.message.includes('Invalid login credentials')) {
+          setError('Invalid email or password');
+        } else {
+          setError(error.message);
+        }
+        return;
+      }
+      router.push('/dashboard');
     } catch (error) {
       console.error('Error logging in:', error);
-      // Handle error (you might want to show an error message to the user)
+      setError('An unexpected error occurred. Please try again.');
     } finally {
       setIsLoading(false);
     }
@@ -108,12 +117,12 @@ export default function LoginPage() {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
-        className="min-h-screen flex items-center justify-center p-4 relative z-10"
+        className="min-h-screen flex items-center justify-center p-4 relative z-50"
       >
-        <div className="glass-card w-full max-w-md">
+        <div className="glass-card w-full max-w-md relative z-50">
           <button
             onClick={handleBack}
-            className="btn-back mb-6"
+            className="btn-back mb-6 relative z-50"
             type="button"
           >
             <Image
@@ -129,7 +138,13 @@ export default function LoginPage() {
           <h1 className="auth-title">Welcome Back</h1>
           <p className="auth-subtitle">Sign in to continue your learning journey</p>
           
-          <form onSubmit={handleSubmit} className="space-y-6">
+          {error && (
+            <div className="mb-6 p-4 bg-red-500/10 border border-red-500/20 rounded-lg">
+              <p className="text-red-200 text-sm">{error}</p>
+            </div>
+          )}
+          
+          <form onSubmit={handleSubmit} className="space-y-6 relative z-50">
             <div>
               <label htmlFor="email" className="form-label">
                 Email
@@ -164,7 +179,7 @@ export default function LoginPage() {
 
             <button
               type="submit"
-              className="btn-primary w-full"
+              className="btn-primary w-full relative z-50"
               disabled={isLoading}
             >
               {isLoading ? 'Logging in...' : 'Log In'}
@@ -178,7 +193,7 @@ export default function LoginPage() {
 
             <button
               type="button"
-              className="btn-secondary w-full flex items-center justify-center gap-2"
+              className="btn-secondary w-full flex items-center justify-center gap-2 relative z-50"
               onClick={handleGoogleSignIn}
               disabled={isLoading}
             >
@@ -193,7 +208,7 @@ export default function LoginPage() {
             </button>
           </form>
 
-          <div className="mt-6 text-center">
+          <div className="mt-6 text-center relative z-50">
             <p className="text-blue-100">
               Don&apos;t have an account?{' '}
               <Link href="/signup" className="auth-link">
