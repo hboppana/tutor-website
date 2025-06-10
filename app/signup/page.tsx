@@ -52,20 +52,27 @@ export default function SignUp() {
     setIsLoading(true);
     try {
       const supabase = createClient();
+      // Use the current origin for the redirect
+      const redirectTo = `${window.location.origin}/auth/callback`;
+      console.log('Redirect URL:', redirectTo); // Log the redirect URL for debugging
       const { error } = await supabase.auth.signInWithOAuth({
         provider: 'google',
         options: {
-          redirectTo: `${window.location.origin}/auth/callback`,
+          redirectTo,
           queryParams: {
             access_type: 'offline',
             prompt: 'consent',
           },
         },
       });
-      if (error) throw error;
+      if (error) {
+        console.error('OAuth error:', error);
+        throw error;
+      }
     } catch (error) {
       console.error('Error signing up with Google:', error);
-      // Handle error (you might want to show an error message to the user)
+      // Show error to user
+      alert('Failed to sign up with Google. Please try again.');
     } finally {
       setIsLoading(false);
     }
@@ -117,12 +124,12 @@ export default function SignUp() {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
-        className="min-h-screen flex items-center justify-center p-4 relative z-10"
+        className="min-h-screen flex items-center justify-center p-4 relative z-50"
       >
-        <div className="glass-card w-full max-w-md">
+        <div className="glass-card w-full max-w-md relative z-50">
           <button
             onClick={handleBack}
-            className="btn-back mb-6"
+            className="btn-back mb-6 relative z-50"
             type="button"
           >
             <Image
@@ -138,7 +145,7 @@ export default function SignUp() {
           <h1 className="auth-title">Create Account</h1>
           <p className="auth-subtitle">Join me on your learning journey</p>
           
-          <form onSubmit={handleSubmit} className="space-y-6">
+          <form onSubmit={handleSubmit} className="space-y-6 relative z-50">
             <div>
               <label htmlFor="name" className="form-label">
                 Full Name
@@ -205,7 +212,7 @@ export default function SignUp() {
 
             <button
               type="submit"
-              className="btn-primary w-full"
+              className="btn-primary w-full relative z-50"
               disabled={isLoading}
             >
               {isLoading ? 'Signing up...' : 'Sign Up'}
@@ -219,7 +226,7 @@ export default function SignUp() {
 
             <button
               type="button"
-              className="btn-secondary w-full flex items-center justify-center gap-2"
+              className="btn-secondary w-full flex items-center justify-center gap-2 relative z-50"
               onClick={handleGoogleSignUp}
               disabled={isLoading}
             >
@@ -234,7 +241,7 @@ export default function SignUp() {
             </button>
           </form>
 
-          <div className="mt-6 text-center">
+          <div className="mt-6 text-center relative z-50">
             <p className="text-blue-100">
               Already have an account?{' '}
               <Link href="/login" className="auth-link">

@@ -263,26 +263,20 @@ export default function Home() {
         className="min-h-screen flex items-center justify-center px-4 sm:px-6 relative z-10"
       >
         {/* Login/Signup Buttons */}
-        <div className="absolute top-4 sm:top-8 right-4 sm:right-8 flex gap-2 sm:gap-4">
-          <Link href="/login" className="block">
-            <motion.button
-              initial={{ opacity: 0, y: -20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.2, duration: 0.5 }}
+        <div className="absolute top-4 sm:top-8 right-4 sm:right-8 flex gap-2 sm:gap-4 z-50">
+          <Link href="/login" className="block relative z-50">
+            <button
               className="btn-primary w-full"
             >
               Log In
-            </motion.button>
+            </button>
           </Link>
-          <Link href="/signup" className="block">
-            <motion.button
-              initial={{ opacity: 0, y: -20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.3, duration: 0.5 }}
+          <Link href="/signup" className="block relative z-50">
+            <button
               className="btn-secondary w-full"
             >
               Sign Up
-            </motion.button>
+            </button>
           </Link>
         </div>
 
