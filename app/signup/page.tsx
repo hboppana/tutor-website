@@ -80,7 +80,7 @@ export default function SignUp() {
   };
 
   return (
-    <div className="moving-gradient font-['Open_Sans']">
+    <div className="moving-gradient font-['Poppins']">
       {/* GridLines */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div className="absolute inset-0" style={{

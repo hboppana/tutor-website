@@ -264,26 +264,26 @@ export default function Home() {
       >
         {/* Login/Signup Buttons */}
         <div className="absolute top-4 sm:top-8 right-4 sm:right-8 flex gap-2 sm:gap-4">
-          <motion.button
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.2, duration: 0.5 }}
-            className="btn-primary"
-          >
-            <Link href="/login" className="block w-full h-full">
+          <Link href="/login" className="block">
+            <motion.button
+              initial={{ opacity: 0, y: -20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.2, duration: 0.5 }}
+              className="btn-primary w-full"
+            >
               Log In
-            </Link>
-          </motion.button>
-          <motion.button
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.3, duration: 0.5 }}
-            className="btn-secondary"
-          >
-            <Link href="/signup" className="block w-full h-full">
+            </motion.button>
+          </Link>
+          <Link href="/signup" className="block">
+            <motion.button
+              initial={{ opacity: 0, y: -20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.3, duration: 0.5 }}
+              className="btn-secondary w-full"
+            >
               Sign Up
-            </Link>
-          </motion.button>
+            </motion.button>
+          </Link>
         </div>
 
         <div className="flex flex-col md:flex-row items-center md:items-start justify-center md:justify-between w-full max-w-7xl mx-auto pt-16 sm:pt-0">
