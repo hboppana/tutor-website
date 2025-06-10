@@ -58,7 +58,7 @@ export default function TuteeDashboard() {
   }
 
   return (
-    <div className="moving-gradient font-['Open_Sans']">
+    <div className="moving-gradient font-['Poppins']">
       {/* GridLines */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div className="absolute inset-0" style={{
@@ -95,7 +95,7 @@ export default function TuteeDashboard() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between h-16">
             <div className="flex items-center">
-              <h1 className="text-xl font-semibold text-white">Welcome {username}</h1>
+              <h1 className="text-xl font-normal text-white">Welcome {username}</h1>
             </div>
             <div className="flex items-center">
               <button
@@ -126,8 +126,8 @@ export default function TuteeDashboard() {
               className="glass-card"
             >
               <div className="px-4 py-5 sm:p-6">
-                <h3 className="text-lg font-medium text-white">Amount Owed</h3>
-                <div className="mt-2 text-3xl font-semibold text-white">
+                <h3 className="text-lg font-normal text-white">Amount Owed</h3>
+                <div className="mt-2 text-3xl font-normal text-white">
                   ${totalOwed.toFixed(2)}
                 </div>
               </div>
