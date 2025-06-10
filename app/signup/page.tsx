@@ -4,6 +4,7 @@ import { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
+import { createClient } from '@/app/lib/client';
 
 export default function SignUp() {
   const router = useRouter();
@@ -13,15 +14,61 @@ export default function SignUp() {
     password: '',
     confirmPassword: ''
   });
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleBack = () => {
     router.push('/');
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Handle form submission here
-    console.log('Signup form submitted:', formData);
+    if (formData.password !== formData.confirmPassword) {
+      // Handle password mismatch
+      return;
+    }
+    setIsLoading(true);
+    try {
+      const supabase = createClient();
+      const { error } = await supabase.auth.signUp({
+        email: formData.email,
+        password: formData.password,
+        options: {
+          data: {
+            full_name: formData.name,
+          },
+        },
+      });
+      if (error) throw error;
+      router.push('/dashboard'); // Redirect to dashboard after successful signup
+    } catch (error) {
+      console.error('Error signing up:', error);
+      // Handle error (you might want to show an error message to the user)
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleGoogleSignUp = async () => {
+    setIsLoading(true);
+    try {
+      const supabase = createClient();
+      const { error } = await supabase.auth.signInWithOAuth({
+        provider: 'google',
+        options: {
+          redirectTo: `${window.location.origin}/auth/callback`,
+          queryParams: {
+            access_type: 'offline',
+            prompt: 'consent',
+          },
+        },
+      });
+      if (error) throw error;
+    } catch (error) {
+      console.error('Error signing up with Google:', error);
+      // Handle error (you might want to show an error message to the user)
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -159,8 +206,9 @@ export default function SignUp() {
             <button
               type="submit"
               className="btn-primary w-full"
+              disabled={isLoading}
             >
-              Sign Up
+              {isLoading ? 'Signing up...' : 'Sign Up'}
             </button>
 
             <div className="divider">
@@ -172,6 +220,8 @@ export default function SignUp() {
             <button
               type="button"
               className="btn-secondary w-full flex items-center justify-center gap-2"
+              onClick={handleGoogleSignUp}
+              disabled={isLoading}
             >
               <Image
                 src="/google-icon.svg"
@@ -180,7 +230,7 @@ export default function SignUp() {
                 height={24}
                 className="w-6 h-6"
               />
-              Sign up with Google
+              {isLoading ? 'Signing up...' : 'Sign up with Google'}
             </button>
           </form>
 

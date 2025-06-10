@@ -4,6 +4,7 @@ import { useState } from 'react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import { createClient } from '@/app/lib/client';
 
 export default function LoginPage() {
   const router = useRouter();
@@ -11,11 +12,50 @@ export default function LoginPage() {
     email: '',
     password: '',
   });
+  const [isLoading, setIsLoading] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Handle login logic here
-    console.log('Login form submitted:', formData);
+    setIsLoading(true);
+    try {
+      const supabase = createClient();
+      const { error } = await supabase.auth.signInWithPassword({
+        email: formData.email,
+        password: formData.password,
+      });
+      if (error) throw error;
+      router.push('/dashboard'); // Redirect to dashboard after successful login
+    } catch (error) {
+      console.error('Error logging in:', error);
+      // Handle error (you might want to show an error message to the user)
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleGoogleSignIn = async () => {
+    setIsLoading(true);
+    try {
+      const supabase = createClient();
+      const redirectTo = `${window.location.origin}/auth/callback`;
+      console.log('Redirect URL:', redirectTo); // Log the redirect URL
+      const { error } = await supabase.auth.signInWithOAuth({
+        provider: 'google',
+        options: {
+          redirectTo,
+          queryParams: {
+            access_type: 'offline',
+            prompt: 'consent',
+          },
+        },
+      });
+      if (error) throw error;
+    } catch (error) {
+      console.error('Error signing in with Google:', error);
+      // Handle error (you might want to show an error message to the user)
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -125,8 +165,9 @@ export default function LoginPage() {
             <button
               type="submit"
               className="btn-primary w-full"
+              disabled={isLoading}
             >
-              Log In
+              {isLoading ? 'Logging in...' : 'Log In'}
             </button>
 
             <div className="divider">
@@ -138,6 +179,8 @@ export default function LoginPage() {
             <button
               type="button"
               className="btn-secondary w-full flex items-center justify-center gap-2"
+              onClick={handleGoogleSignIn}
+              disabled={isLoading}
             >
               <Image
                 src="/google-icon.svg"
@@ -146,7 +189,7 @@ export default function LoginPage() {
                 height={24}
                 className="w-6 h-6"
               />
-              Sign in with Google
+              {isLoading ? 'Signing in...' : 'Sign in with Google'}
             </button>
           </form>
 
