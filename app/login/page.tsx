@@ -37,10 +37,7 @@ export default function LoginPage() {
     setIsLoading(true);
     try {
       const supabase = createClient();
-      // Use the current origin for the redirect
-      const redirectTo = process.env.NODE_ENV === 'production' 
-        ? 'https://tutor-website-beta-six.vercel.app/auth/callback'
-        : `${window.location.origin}/auth/callback`;
+      const redirectTo = `${window.location.origin}/auth/callback`;
       console.log('Redirect URL:', redirectTo);
       const { error } = await supabase.auth.signInWithOAuth({
         provider: 'google',
