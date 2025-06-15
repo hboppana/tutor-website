@@ -21,11 +21,9 @@ export default function ScheduleManagementCard() {
       <div className="flex flex-col gap-4 p-6 h-full items-center justify-center">
         <div className="hidden">
           <CalWidget 
-            calLink="hemanshu-boppana-inqnfj/reg-tut"
             namespace="reg-tut"
           />
           <CalWidget 
-            calLink="hemanshu-boppana-inqnfj/sat-act"
             namespace="sat-act"
           />
         </div>
@@ -64,7 +62,6 @@ export default function ScheduleManagementCard() {
       </div>
       <div className="flex-1 flex items-center justify-center">
         <CalWidget 
-          calLink={`hemanshu-boppana-inqnfj/${viewState === 'regular' ? 'reg-tut' : 'sat-act'}`}
           namespace={viewState === 'regular' ? 'reg-tut' : 'sat-act'}
           onBookingSuccess={handleBookingSuccess}
         />
