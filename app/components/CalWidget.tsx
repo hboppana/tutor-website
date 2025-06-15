@@ -4,14 +4,30 @@ import { getCalApi } from "@calcom/embed-react";
 import { useEffect } from "react";
 import { createClient } from '@/app/lib/client';
 
-interface CalWidgetProps {
-  calLink: string;
+interface CalEventData {
+  type: string;
   namespace: string;
-  onBookingSuccess?: (data: any) => void;
+  fullType: string;
+  data: {
+    booking: unknown;
+    eventType: unknown;
+    date: string;
+    duration: number | undefined;
+    organizer: {
+      name: string;
+      email: string;
+      timeZone: string;
+    };
+    confirmed: boolean;
+  };
+}
+
+interface CalWidgetProps {
+  namespace: string;
+  onBookingSuccess?: (data: CalEventData) => void;
 }
 
 export default function CalWidget({ 
-  calLink,
   namespace,
   onBookingSuccess
 }: CalWidgetProps) {
@@ -34,7 +50,7 @@ export default function CalWidget({
       // Listen for booking success
       cal("on", {
         action: "bookingSuccessful",
-        callback: async (e: any) => {
+        callback: async (e: CustomEvent<CalEventData>) => {
           const bookingData = e.detail;
           console.log("Booking successful:", bookingData);
 
@@ -43,25 +59,21 @@ export default function CalWidget({
           const { data: { user } } = await supabase.auth.getUser();
 
           if (user) {
-            const { data, error } = await supabase
+            await supabase
               .from('bookings')
               .insert([
                 {
                   user_id: user.id,
-                  event_type: bookingData.eventType,
-                  start_time: bookingData.startTime,
-                  end_time: bookingData.endTime,
-                  attendee_name: bookingData.attendee.name,
-                  attendee_email: bookingData.attendee.email,
-                  booking_id: bookingData.uid,
-                  status: 'confirmed',
+                  event_type: bookingData.data.eventType,
+                  start_time: bookingData.data.date,
+                  end_time: new Date(new Date(bookingData.data.date).getTime() + (bookingData.data.duration || 0) * 60000).toISOString(),
+                  attendee_name: bookingData.data.organizer.name,
+                  attendee_email: bookingData.data.organizer.email,
+                  booking_id: bookingData.type,
+                  status: bookingData.data.confirmed ? 'confirmed' : 'pending',
                   metadata: bookingData
                 }
               ]);
-
-            if (error) {
-              console.error('Error storing booking:', error);
-            }
           }
 
           // Call the onBookingSuccess callback if provided

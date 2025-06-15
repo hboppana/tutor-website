@@ -5,7 +5,6 @@ import { useRouter } from 'next/navigation';
 import { createClient } from '@/app/lib/client';
 import { motion } from 'framer-motion';
 import Image from 'next/image';
-import CalWidget from '@/app/components/CalWidget';
 import ScheduleManagementCard from '@/app/components/ScheduleManagementCard';
 
 export default function TuteeDashboard() {

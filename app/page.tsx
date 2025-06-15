@@ -513,7 +513,7 @@ export default function Home() {
       <section className="py-16 px-4 sm:px-6 relative z-10">
         <div className="max-w-7xl mx-auto">
           <h2 className="text-3xl sm:text-4xl font-semibold text-white text-center mb-8">
-            Interested? Let's Chat!
+            Interested? Let&apos;s Chat!
           </h2>
           <div className="flex flex-col items-center justify-center gap-8">
             <button 
