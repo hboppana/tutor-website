@@ -5,7 +5,8 @@ import { useRouter } from 'next/navigation';
 import { createClient } from '@/app/lib/client';
 import { motion } from 'framer-motion';
 import Image from 'next/image';
-import CalendlyWidget from '@/app/components/CalendlyWidget';
+import CalWidget from '@/app/components/CalWidget';
+import ScheduleManagementCard from '@/app/components/ScheduleManagementCard';
 
 export default function AdminDashboard() {
   const router = useRouter();
@@ -118,8 +119,8 @@ export default function AdminDashboard() {
 
       <main className="relative z-10 max-w-7xl mx-auto py-8 sm:px-6 lg:px-8">
         <div className="px-4 py-6 sm:px-0">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div className="space-y-6">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+            <div className="space-y-6 md:col-span-2">
               {/* Total Money Owed Card */}
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
@@ -153,27 +154,17 @@ export default function AdminDashboard() {
               </motion.div>
             </div>
 
-            {/* Calendly Widget Card */}
+            {/* Cal.com Widget Card */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.2 }}
+              className="md:col-span-2 flex items-center justify-center"
             >
-              <div className="px-4 py-5 sm:p-6">
-                <h3 className="text-xl md:text-2xl font-medium text-white mb-4 font-['Poppins']">Schedule Management</h3>
-                <div className="bg-gradient-to-br from-blue-500/10 to-indigo-500/10 rounded-xl overflow-hidden border border-white/10 shadow-2xl">
-                  <style jsx global>{`
-                    .calendly-inline-widget {
-                      background: transparent !important;
-                    }
-                    .calendly-inline-widget iframe {
-                      background: transparent !important;
-                    }
-                    .calendly-badge-container {
-                      display: none !important;
-                    }
-                  `}</style>
-                  <CalendlyWidget url="https://calendly.com/hboppana01" />
+              <div className="px-4 py-5 sm:p-6 w-full max-w-lg">
+                <h3 className="text-3xl md:text-4xl font-medium text-white mb-6 font-['Poppins']">Schedule Management</h3>
+                <div className="bg-gradient-to-br from-blue-500/10 to-indigo-500/10 rounded-xl overflow-hidden border border-white/10 shadow-2xl h-[300px]">
+                  <ScheduleManagementCard />
                 </div>
               </div>
             </motion.div>

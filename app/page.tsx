@@ -4,6 +4,7 @@ import { useRef, useEffect, useState, TouchEvent } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import React from 'react';
+import { getCalApi } from "@calcom/embed-react";
 
 // GridLines component
 const GridLines = () => {
@@ -226,6 +227,13 @@ export default function Home() {
       block: 'start'
     });
   };
+
+  useEffect(() => {
+    (async function () {
+      const cal = await getCalApi({"namespace":"consultation"});
+      cal("ui", {"theme":"light","hideEventTypeDetails":false,"layout":"month_view"});
+    })();
+  }, []);
 
   return (
     <div className="relative min-h-screen bg-gradient-to-br from-blue-600 via-blue-400 to-blue-600 overflow-hidden font-['Poppins']">
@@ -498,6 +506,43 @@ export default function Home() {
             User Testimonials
           </h2>
           <TestimonialsCarousel testimonials={testimonials} />
+        </div>
+      </section>
+
+      {/* Consultation Section */}
+      <section className="py-16 px-4 sm:px-6 relative z-10">
+        <div className="max-w-7xl mx-auto">
+          <h2 className="text-3xl sm:text-4xl font-semibold text-white text-center mb-8">
+            Interested? Let's Chat!
+          </h2>
+          <div className="flex flex-col items-center justify-center gap-8">
+            <button 
+              data-cal-namespace="consultation"
+              data-cal-link="hemanshu-boppana-inqnfj/consultation"
+              data-cal-config='{"layout":"month_view","theme":"light"}'
+              className="btn-primary text-xl px-8 py-4"
+            >
+              Schedule a Consultation
+            </button>
+            
+            <div className="text-center text-white space-y-4">
+              <p className="text-xl">Or reach out directly:</p>
+              <div className="flex flex-col sm:flex-row items-center justify-center gap-6 text-lg">
+                <a href="tel:+1234567890" className="flex items-center gap-2 hover:text-blue-200 transition-colors">
+                  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path>
+                  </svg>
+                  (630) 453-4655
+                </a>
+                <a href="mailto:contact@example.com" className="flex items-center gap-2 hover:text-blue-200 transition-colors">
+                  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+                  </svg>
+                  hboppana01@gmail.com
+                </a>
+              </div>
+            </div>
+          </div>
         </div>
       </section>
     </div>
