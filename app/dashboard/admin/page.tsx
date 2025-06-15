@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { createClient } from '@/app/lib/client';
 import { motion } from 'framer-motion';
 import Image from 'next/image';
+import CalendlyWidget from '@/app/components/CalendlyWidget';
 
 export default function AdminDashboard() {
   const router = useRouter();
@@ -186,6 +187,21 @@ export default function AdminDashboard() {
                     </button>
                   </div>
                 </form>
+              </div>
+            </motion.div>
+
+            {/* Calendly Widget Card */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.2 }}
+              className="glass-card"
+            >
+              <div className="px-4 py-5 sm:p-6">
+                <h3 className="text-lg font-medium text-white mb-4">Schedule Management</h3>
+                <div className="bg-white rounded-lg overflow-hidden">
+                  <CalendlyWidget url="https://calendly.com/hboppana01" />
+                </div>
               </div>
             </motion.div>
           </div>
