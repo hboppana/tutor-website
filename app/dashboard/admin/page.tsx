@@ -10,7 +10,6 @@ import CalendlyWidget from '@/app/components/CalendlyWidget';
 export default function AdminDashboard() {
   const router = useRouter();
   const [totalOwed, setTotalOwed] = useState(0);
-  const [webhookUrl, setWebhookUrl] = useState('');
   const [isLoading, setIsLoading] = useState(true);
   const [username, setUsername] = useState('');
 
@@ -38,16 +37,6 @@ export default function AdminDashboard() {
         setTotalOwed(total);
       }
 
-      // Fetch webhook URL
-      const { data: settings } = await supabase
-        .from('settings')
-        .select('calendar_webhook_url')
-        .single();
-
-      if (settings) {
-        setWebhookUrl(settings.calendar_webhook_url || '');
-      }
-
       setIsLoading(false);
     };
 
@@ -58,23 +47,6 @@ export default function AdminDashboard() {
     const supabase = createClient();
     await supabase.auth.signOut();
     router.push('/login');
-  };
-
-  const handleWebhookUpdate = async (e: React.FormEvent) => {
-    e.preventDefault();
-    const supabase = createClient();
-    
-    try {
-      const { error } = await supabase
-        .from('settings')
-        .upsert({ calendar_webhook_url: webhookUrl });
-
-      if (error) throw error;
-      alert('Webhook URL updated successfully!');
-    } catch (error) {
-      console.error('Error updating webhook:', error);
-      alert('Failed to update webhook URL');
-    }
   };
 
   if (isLoading) {
