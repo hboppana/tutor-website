@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { createClient } from '@/app/lib/client';
 import { motion } from 'framer-motion';
 import Image from 'next/image';
+import CalendlyWidget from '@/app/components/CalendlyWidget';
 
 export default function TuteeDashboard() {
   const router = useRouter();
@@ -49,6 +50,11 @@ export default function TuteeDashboard() {
     router.push('/login');
   };
 
+  const handlePayNow = () => {
+    // TODO: Implement payment functionality
+    alert('Payment functionality coming soon!');
+  };
+
   if (isLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
@@ -91,16 +97,16 @@ export default function TuteeDashboard() {
         </div>
       </div>
 
-      <nav className="relative z-10">
+      <nav className="relative z-10 pt-6">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between h-16">
             <div className="flex items-center">
-              <h1 className="text-xl font-normal text-white">Welcome {username}</h1>
+              <h1 className="text-2xl md:text-3xl font-semibold text-white font-['Poppins'] tracking-tight">Welcome, {username}!</h1>
             </div>
             <div className="flex items-center">
               <button
                 onClick={handleLogout}
-                className="btn-back"
+                className="btn-back font-['Poppins']"
               >
                 <Image
                   src="/logout-icon.svg"
@@ -116,19 +122,74 @@ export default function TuteeDashboard() {
         </div>
       </nav>
 
-      <main className="relative z-10 max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
+      <main className="relative z-10 max-w-7xl mx-auto py-8 sm:px-6 lg:px-8">
         <div className="px-4 py-6 sm:px-0">
-          <div className="grid grid-cols-1 gap-6">
-            {/* Total Money Owed Card */}
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+            <div className="space-y-6 md:col-span-2">
+              {/* Total Money Owed Card */}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="glass-card"
+              >
+                <div className="px-4 py-5 sm:p-6">
+                  <h3 className="text-lg font-medium text-white font-['Poppins']">Amount Owed</h3>
+                  <div className="mt-4 text-5xl font-semibold text-white tracking-tight font-['Poppins']">
+                    ${totalOwed.toFixed(2)}
+                  </div>
+                  <button
+                    onClick={handlePayNow}
+                    className="mt-6 w-full bg-white/10 hover:bg-white/20 text-white font-medium py-2.5 px-4 rounded-lg transition-all duration-200 font-['Poppins'] text-base border border-white/20 backdrop-blur-sm flex items-center justify-center gap-2"
+                  >
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                      <path fillRule="evenodd" d="M4 4a2 2 0 00-2 2v4a2 2 0 002 2V6h10a2 2 0 00-2-2H4zm2 6a2 2 0 012-2h8a2 2 0 012 2v4a2 2 0 01-2 2H8a2 2 0 01-2-2v-4zm6 4a2 2 0 100-4 2 2 0 000 4z" clipRule="evenodd" />
+                    </svg>
+                    Pay Now
+                  </button>
+                </div>
+              </motion.div>
+
+              {/* Notes Card */}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.1 }}
+                className="glass-card"
+              >
+                <div className="px-4 py-5 sm:p-6">
+                  <h3 className="text-lg font-medium text-white mb-4 font-['Poppins']">Notes</h3>
+                  <div className="bg-white/10 rounded-lg p-4 min-h-[150px]">
+                    <textarea 
+                      className="w-full h-full bg-transparent text-white placeholder-white/50 resize-none focus:outline-none font-['Poppins']"
+                      placeholder="Add your notes here..."
+                    />
+                  </div>
+                </div>
+              </motion.div>
+            </div>
+
+            {/* Calendly Widget Card */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              className="glass-card"
+              transition={{ delay: 0.2 }}
+              className="md:col-span-2"
             >
               <div className="px-4 py-5 sm:p-6">
-                <h3 className="text-lg font-normal text-white">Amount Owed</h3>
-                <div className="mt-2 text-3xl font-normal text-white">
-                  ${totalOwed.toFixed(2)}
+                <h3 className="text-xl md:text-2xl font-medium text-white mb-4 font-['Poppins']">Schedule Management</h3>
+                <div className="bg-gradient-to-br from-blue-500/10 to-indigo-500/10 rounded-xl overflow-hidden border border-white/10 shadow-2xl">
+                  <style jsx global>{`
+                    .calendly-inline-widget {
+                      background: transparent !important;
+                    }
+                    .calendly-inline-widget iframe {
+                      background: transparent !important;
+                    }
+                    .calendly-badge-container {
+                      display: none !important;
+                    }
+                  `}</style>
+                  <CalendlyWidget url="https://calendly.com/hboppana01" />
                 </div>
               </div>
             </motion.div>
