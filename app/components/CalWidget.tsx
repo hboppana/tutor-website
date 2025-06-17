@@ -8,8 +8,17 @@ interface CalEventData {
   namespace: string;
   fullType: string;
   data: {
-    booking: unknown;
-    eventType: unknown;
+    booking: {
+      id: string;
+      attendees: Array<{
+        name: string;
+        email: string;
+        timeZone: string;
+      }>;
+    };
+    eventType: {
+      title: string;
+    };
     date: string;
     duration: number | undefined;
     organizer: {
@@ -46,16 +55,119 @@ export default function CalWidget({
         }
       });
 
-      // Listen for booking success
+      // Handle booking creation
       cal("on", {
         action: "bookingSuccessful",
-        callback: (e: CustomEvent<CalEventData>) => {
-          const bookingData = e.detail;
-          console.log("Booking successful:", bookingData);
+        callback: async (e: any) => {
+          try {
+            const bookingData = e.detail;
+            const {
+              data: {
+                booking,
+                eventType,
+                date,
+                duration,
+                organizer,
+                confirmed
+              }
+            } = bookingData;
 
-          // Call the onBookingSuccess callback if provided
-          if (onBookingSuccess) {
-            onBookingSuccess(bookingData);
+            if (!booking?.id || !eventType?.title || !date || !organizer?.name || !organizer?.email || !organizer?.timeZone || !booking?.attendees?.[0]) {
+              return;
+            }
+
+            await fetch('/api/bookings', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({
+                type: 'create',
+                bookingData: {
+                  cal_booking_id: booking.id,
+                  event_type: eventType.title,
+                  date: new Date(date).toISOString(),
+                  duration,
+                  organizer_name: organizer.name,
+                  organizer_email: organizer.email,
+                  organizer_timezone: organizer.timeZone,
+                  attendee_name: booking.attendees[0].name,
+                  attendee_email: booking.attendees[0].email,
+                  attendee_timezone: booking.attendees[0].timeZone,
+                  status: 'confirmed'
+                }
+              })
+            });
+
+            if (onBookingSuccess) {
+              onBookingSuccess(bookingData);
+            }
+          } catch (error) {
+            // Silent error handling
+          }
+        }
+      });
+
+      // Handle booking cancellation
+      cal("on", {
+        action: "bookingCancelled",
+        callback: async (e: any) => {
+          try {
+            const bookingData = e.detail;
+            const bookingId = bookingData?.data?.booking?.id;
+            
+            if (!bookingId) {
+              return;
+            }
+
+            await fetch('/api/bookings', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({
+                type: 'cancel',
+                bookingData: {
+                  cal_booking_id: bookingId
+                }
+              })
+            });
+          } catch (error) {
+            // Silent error handling
+          }
+        }
+      });
+
+      // Handle booking rescheduling
+      cal("on", {
+        action: "rescheduleBookingSuccessful",
+        callback: async (e: any) => {
+          try {
+            const bookingData = e.detail;
+            const {
+              data: {
+                booking,
+                date,
+                duration
+              }
+            } = bookingData;
+
+            await fetch('/api/bookings', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({
+                type: 'reschedule',
+                bookingData: {
+                  cal_booking_id: booking.id,
+                  date: new Date(date).toISOString(),
+                  duration
+                }
+              })
+            });
+          } catch (error) {
+            // Silent error handling
           }
         }
       });
