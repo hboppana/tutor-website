@@ -2,7 +2,8 @@
 'use client';
 
 import { getCalApi } from "@calcom/embed-react";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { createClient } from '@/app/lib/client';
 
 interface CalEventData {
   type: string;
@@ -39,6 +40,20 @@ export default function CalWidget({
   namespace,
   onBookingSuccess
 }: CalWidgetProps) {
+  const [userEmail, setUserEmail] = useState<string | null>(null);
+
+  useEffect(() => {
+    const getUserEmail = async () => {
+      const supabase = createClient();
+      const { data: { user } } = await supabase.auth.getUser();
+      if (user?.email) {
+        setUserEmail(user.email);
+      }
+    };
+
+    getUserEmail();
+  }, []);
+
   useEffect(() => {
     (async function () {
       const cal = await getCalApi({ namespace });
@@ -173,5 +188,14 @@ export default function CalWidget({
     })();
   }, [namespace, onBookingSuccess]);
 
-  return null;
+  // Add email to the namespace URL if available
+  const calLink = userEmail ? `${namespace}?email=${encodeURIComponent(userEmail)}` : namespace;
+
+  return (
+    <div 
+      data-cal-link={calLink}
+      data-cal-namespace={namespace}
+      data-cal-config='{"layout":"month_view"}'
+    />
+  );
 } 
