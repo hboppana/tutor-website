@@ -26,7 +26,6 @@ interface CalEventData {
       email: string;
       timeZone: string;
     };
-    confirmed: boolean;
   };
 }
 
@@ -67,8 +66,7 @@ export default function CalWidget({
                 eventType,
                 date,
                 duration,
-                organizer,
-                confirmed
+                organizer
               }
             } = bookingData;
 
@@ -102,7 +100,7 @@ export default function CalWidget({
             if (onBookingSuccess) {
               onBookingSuccess(bookingData);
             }
-          } catch (error) {
+          } catch {
             // Silent error handling
           }
         }
@@ -132,7 +130,7 @@ export default function CalWidget({
                 }
               })
             });
-          } catch (error) {
+          } catch {
             // Silent error handling
           }
         }
@@ -166,7 +164,7 @@ export default function CalWidget({
                 }
               })
             });
-          } catch (error) {
+          } catch {
             // Silent error handling
           }
         }
