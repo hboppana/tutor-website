@@ -162,7 +162,7 @@ export default function AdminDashboard() {
             >
               <div className="px-4 py-5 sm:p-6 w-full max-w-lg">
                 <h3 className="text-3xl md:text-4xl font-medium text-white mb-6 font-['Poppins']">Schedule Management</h3>
-                <div className="bg-gradient-to-br from-blue-500/10 to-indigo-500/10 rounded-xl overflow-hidden border border-white/10 shadow-2xl h-[300px]">
+                <div className="bg-gradient-to-br from-blue-500/10 to-indigo-500/10 rounded-xl overflow-hidden border border-white/10 shadow-2xl h-[400px]">
                   <ScheduleManagementCard />
                 </div>
               </div>
