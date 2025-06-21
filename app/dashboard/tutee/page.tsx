@@ -6,10 +6,12 @@ import { createClient } from '@/app/lib/client';
 import { motion } from 'framer-motion';
 import Image from 'next/image';
 import ScheduleManagementCard from '@/app/components/ScheduleManagementCard';
+import { calculateAmountOwedForUser, BookingAmount } from '@/app/lib/booking-calculations';
 
 export default function TuteeDashboard() {
   const router = useRouter();
   const [totalOwed, setTotalOwed] = useState(0);
+  const [bookingCount, setBookingCount] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
   const [username, setUsername] = useState('');
 
@@ -26,17 +28,10 @@ export default function TuteeDashboard() {
       // Set username from user metadata or email
       setUsername(user.user_metadata?.full_name || user.email?.split('@')[0] || 'User');
 
-      // Fetch total money owed for this specific user
-      const { data: payments } = await supabase
-        .from('payments')
-        .select('amount')
-        .eq('status', 'pending')
-        .eq('user_id', user.id);
-
-      if (payments) {
-        const total = payments.reduce((sum, payment) => sum + payment.amount, 0);
-        setTotalOwed(total);
-      }
+      // Calculate amount owed for this specific user
+      const bookingData: BookingAmount = await calculateAmountOwedForUser(user.email!);
+      setTotalOwed(bookingData.totalOwed);
+      setBookingCount(bookingData.bookingCount);
 
       setIsLoading(false);
     };
@@ -136,6 +131,9 @@ export default function TuteeDashboard() {
                   <h3 className="text-lg font-medium text-white font-['Poppins']">Amount Owed</h3>
                   <div className="mt-4 text-5xl font-semibold text-white tracking-tight font-['Poppins']">
                     ${totalOwed.toFixed(2)}
+                  </div>
+                  <div className="mt-2 text-sm text-white/70 font-['Poppins']">
+                    From {bookingCount} confirmed session{bookingCount !== 1 ? 's' : ''}
                   </div>
                   <button
                     onClick={handlePayNow}
