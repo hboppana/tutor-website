@@ -6,6 +6,13 @@ import { createClient } from '@/app/lib/client';
 
 type ViewState = 'buttons' | 'regular' | 'sat-act';
 
+interface CalConfig {
+  layout: string;
+  theme: string;
+  name?: string;
+  email?: string;
+}
+
 export default function ScheduleManagementCard() {
   const [viewState, setViewState] = useState<ViewState>('buttons');
   const [userEmail, setUserEmail] = useState<string | null>(null);
@@ -35,7 +42,7 @@ export default function ScheduleManagementCard() {
 
   // Build the Cal.com config with prefill data
   const buildCalConfig = () => {
-    const config: any = {
+    const config: CalConfig = {
       layout: "month_view",
       theme: "light"
     };
