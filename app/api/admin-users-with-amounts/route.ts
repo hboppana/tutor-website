@@ -8,6 +8,14 @@ const supabaseAdmin = createClient(
   process.env.SUPABASE_SERVICE_ROLE_KEY!
 );
 
+interface Booking {
+  attendee_email: string;
+  attendee_name: string;
+  duration: number;
+  event_type: string;
+  status: string;
+}
+
 export async function GET() {
   // Fetch all users from Supabase Auth
   const { data: users, error: usersError } = await supabaseAdmin.auth.admin.listUsers();
@@ -25,7 +33,7 @@ export async function GET() {
   }
 
   // Map bookings by attendee email
-  const bookingsByEmail: Record<string, any[]> = {};
+  const bookingsByEmail: Record<string, Booking[]> = {};
   bookings?.forEach(booking => {
     if (!bookingsByEmail[booking.attendee_email]) {
       bookingsByEmail[booking.attendee_email] = [];
@@ -39,7 +47,7 @@ export async function GET() {
     const name = user.user_metadata?.full_name || email?.split('@')[0] || 'User';
     const userBookings = email ? bookingsByEmail[email] || [] : [];
     let totalOwed = 0;
-    let bookingCount = userBookings.length;
+    const bookingCount = userBookings.length;
     userBookings.forEach(booking => {
       if (booking.duration && booking.event_type) {
         totalOwed += calculateSessionAmount(booking.duration, booking.event_type);

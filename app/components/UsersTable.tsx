@@ -24,7 +24,7 @@ export default function UsersTable() {
       if (!res.ok) throw new Error('Failed to fetch users');
       const userData = await res.json();
       setUsers(userData);
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error('Error fetching users:', err);
       setError('Failed to load user data');
     } finally {
