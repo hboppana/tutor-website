@@ -31,6 +31,7 @@ export default function RootLayout({
     <html lang="en">
       <body
         className={`${poppins.variable} ${playfair.variable} font-poppins antialiased`}
+        suppressHydrationWarning={true}
       >
         {children}
         <Analytics />

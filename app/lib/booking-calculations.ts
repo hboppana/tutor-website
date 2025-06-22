@@ -5,6 +5,13 @@ export interface BookingAmount {
   bookingCount: number;
 }
 
+export interface UserWithAmount {
+  email: string;
+  name: string;
+  totalOwed: number;
+  bookingCount: number;
+}
+
 export function calculateSessionAmount(duration: number, eventType: string): number {
   // Regular session pricing
   if (eventType.toLowerCase().includes('regular') || !eventType.toLowerCase().includes('sat') && !eventType.toLowerCase().includes('act')) {
@@ -81,4 +88,47 @@ export async function calculateTotalAmountOwedForAllTutees(): Promise<BookingAmo
     totalOwed,
     bookingCount
   };
+}
+
+export async function getAllUsersWithAmounts(): Promise<UserWithAmount[]> {
+  const supabase = createClient();
+  
+  // Get all unique attendees from confirmed bookings
+  const { data: bookings, error } = await supabase
+    .from('bookings')
+    .select('attendee_email, attendee_name, duration, event_type, status')
+    .eq('status', 'confirmed');
+
+  if (error) {
+    console.error('Error fetching bookings:', error);
+    return [];
+  }
+
+  // Group bookings by attendee email
+  const userMap = new Map<string, UserWithAmount>();
+
+  bookings?.forEach(booking => {
+    const email = booking.attendee_email;
+    const name = booking.attendee_name || email.split('@')[0];
+    
+    if (!userMap.has(email)) {
+      userMap.set(email, {
+        email,
+        name,
+        totalOwed: 0,
+        bookingCount: 0
+      });
+    }
+
+    const user = userMap.get(email)!;
+    user.bookingCount++;
+    
+    if (booking.duration && booking.event_type) {
+      const sessionAmount = calculateSessionAmount(booking.duration, booking.event_type);
+      user.totalOwed += sessionAmount;
+    }
+  });
+
+  // Convert map to array and sort by total owed (descending)
+  return Array.from(userMap.values()).sort((a, b) => b.totalOwed - a.totalOwed);
 } 

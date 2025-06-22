@@ -6,6 +6,7 @@ import { createClient } from '@/app/lib/client';
 import { motion } from 'framer-motion';
 import Image from 'next/image';
 import ScheduleManagementCard from '@/app/components/ScheduleManagementCard';
+import UsersTable from '@/app/components/UsersTable';
 import { calculateTotalAmountOwedForAllTutees, BookingAmount } from '@/app/lib/booking-calculations';
 
 export default function AdminDashboard() {
@@ -133,23 +134,8 @@ export default function AdminDashboard() {
                 </div>
               </motion.div>
 
-              {/* Notes Card */}
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.1 }}
-                className="glass-card"
-              >
-                <div className="px-4 py-5 sm:p-6">
-                  <h3 className="text-lg font-medium text-white mb-4 font-['Poppins']">Notes</h3>
-                  <div className="bg-white/10 rounded-lg p-4 min-h-[150px]">
-                    <textarea 
-                      className="w-full h-full bg-transparent text-white placeholder-white/50 resize-none focus:outline-none font-['Poppins']"
-                      placeholder="Add your notes here..."
-                    />
-                  </div>
-                </div>
-              </motion.div>
+              {/* Users Table Card */}
+              <UsersTable />
             </div>
 
             {/* Cal.com Widget Card */}
