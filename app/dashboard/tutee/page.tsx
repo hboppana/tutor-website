@@ -45,9 +45,37 @@ export default function TuteeDashboard() {
     router.push('/login');
   };
 
-  const handlePayNow = () => {
-    // TODO: Implement payment functionality
-    alert('Payment functionality coming soon!');
+  const handlePayNow = async () => {
+    if (totalOwed <= 0) {
+      alert('Please book a session before attempting to pay.');
+      return;
+    }
+    setIsLoading(true);
+    try {
+      const supabase = createClient();
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) {
+        router.push('/login');
+        return;
+      }
+      const email = user.email;
+      const amount = Math.round(totalOwed * 100); // convert dollars to cents
+      const res = await fetch('/api/create-checkout-session', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ amount, email }),
+      });
+      const data = await res.json();
+      if (data.url) {
+        window.location.href = data.url; // Directly redirect to Stripe Checkout
+      } else {
+        alert(data.error || 'Payment failed.');
+        setIsLoading(false);
+      }
+    } catch (err) {
+      alert('Payment failed.');
+      setIsLoading(false);
+    }
   };
 
   if (isLoading) {
@@ -138,11 +166,12 @@ export default function TuteeDashboard() {
                   <button
                     onClick={handlePayNow}
                     className="mt-6 w-full bg-white/10 hover:bg-white/20 text-white font-medium py-2.5 px-4 rounded-lg transition-all duration-200 font-['Poppins'] text-base border border-white/20 backdrop-blur-sm flex items-center justify-center gap-2"
+                    disabled={isLoading}
                   >
                     <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
                       <path fillRule="evenodd" d="M4 4a2 2 0 00-2 2v4a2 2 0 002 2V6h10a2 2 0 00-2-2H4zm2 6a2 2 0 012-2h8a2 2 0 012 2v4a2 2 0 01-2 2H8a2 2 0 01-2-2v-4zm6 4a2 2 0 100-4 2 2 0 000 4z" clipRule="evenodd" />
                     </svg>
-                    Pay Now
+                    {isLoading ? 'Redirecting...' : 'Pay Now'}
                   </button>
                 </div>
               </motion.div>
