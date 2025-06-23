@@ -85,7 +85,7 @@ export default function TuteeDashboard() {
         alert(data.error || 'Payment failed.');
         setIsLoading(false);
       }
-    } catch (err) {
+    } catch {
       alert('Payment failed.');
       setIsLoading(false);
     }

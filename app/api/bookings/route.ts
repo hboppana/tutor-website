@@ -61,7 +61,7 @@ export async function POST(request: Request) {
         }
 
         // Update the booking status
-        const { data: updatedBooking, error: cancelError } = await supabase
+        const { error: cancelError } = await supabase
           .from('bookings')
           .update({ status: 'cancelled' })
           .eq('cal_booking_id', bookingData.cal_booking_id)
