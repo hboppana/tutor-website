@@ -73,20 +73,35 @@ export default function TuteeDashboard() {
       }
       const email = user.email;
       const amount = Math.round(totalOwed * 100); // convert dollars to cents
+      
+      console.log('Creating Stripe session with:', { amount, email });
+      
       const res = await fetch('/api/create-checkout-session', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ amount, email }),
       });
+      
+      if (!res.ok) {
+        const errorData = await res.json();
+        console.error('Stripe session creation failed:', errorData);
+        alert(`Payment failed: ${errorData.error || errorData.details || 'Unknown error'}`);
+        setIsLoading(false);
+        return;
+      }
+      
       const data = await res.json();
       if (data.url) {
+        console.log('Redirecting to Stripe checkout:', data.url);
         window.location.href = data.url; // Directly redirect to Stripe Checkout
       } else {
-        alert(data.error || 'Payment failed.');
+        console.error('No checkout URL received:', data);
+        alert(data.error || 'Payment failed - no checkout URL received.');
         setIsLoading(false);
       }
-    } catch {
-      alert('Payment failed.');
+    } catch (error) {
+      console.error('Payment error:', error);
+      alert(`Payment failed: ${error instanceof Error ? error.message : 'Unknown error'}`);
       setIsLoading(false);
     }
   };
