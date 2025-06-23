@@ -3,7 +3,7 @@ import { NextResponse } from 'next/server';
 
 const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+  process.env.SUPABASE_SERVICE_ROLE_KEY!
 );
 
 export async function POST(request: Request) {
@@ -43,13 +43,15 @@ export async function POST(request: Request) {
           console.error('Error creating booking:', insertError);
           throw insertError;
         }
+
+        // No user table logic, just create the booking
         break;
 
       case 'cancel':
         // First check if the booking exists
         const { data: bookingToCancel } = await supabase
           .from('bookings')
-          .select('cal_booking_id')
+          .select('cal_booking_id, duration, event_type, attendee_email')
           .eq('cal_booking_id', bookingData.cal_booking_id)
           .single();
 
@@ -71,7 +73,7 @@ export async function POST(request: Request) {
           throw cancelError;
         }
 
-        console.log('Successfully cancelled booking:', updatedBooking);
+        // No user table logic, just update the booking status
         break;
 
       case 'delete':

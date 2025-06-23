@@ -38,6 +38,15 @@ export default function AdminDashboard() {
     };
 
     checkAdmin();
+
+    // Set up polling to refresh total amount owed every 5 seconds
+    const interval = setInterval(async () => {
+      const bookingData: BookingAmount = await calculateTotalAmountOwedForAllTutees();
+      setTotalOwed(bookingData.totalOwed);
+      setBookingCount(bookingData.bookingCount);
+    }, 5000);
+
+    return () => clearInterval(interval);
   }, [router]);
 
   const handleLogout = async () => {

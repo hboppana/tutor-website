@@ -37,6 +37,19 @@ export default function TuteeDashboard() {
     };
 
     checkUser();
+
+    // Set up polling to refresh amount owed every 5 seconds
+    const interval = setInterval(async () => {
+      const supabase = createClient();
+      const { data: { user } } = await supabase.auth.getUser();
+      if (user) {
+        const bookingData: BookingAmount = await calculateAmountOwedForUser(user.email!);
+        setTotalOwed(bookingData.totalOwed);
+        setBookingCount(bookingData.bookingCount);
+      }
+    }, 5000);
+
+    return () => clearInterval(interval);
   }, [router]);
 
   const handleLogout = async () => {

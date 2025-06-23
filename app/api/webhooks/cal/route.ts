@@ -15,11 +15,10 @@ function verifyWebhookSignature(payload: string, signature: string): boolean {
 }
 
 export async function POST(req: Request) {
+  console.log('Cal.com webhook POST received');
   try {
     const headersList = await headers();
     const signature = headersList.get('x-cal-signature-256');
-    
-    // Debug logging
     console.log('Received headers:', Object.fromEntries(headersList.entries()));
     console.log('Received signature:', signature);
 
@@ -35,10 +34,12 @@ export async function POST(req: Request) {
       console.log('Invalid signature. Expected secret:', WEBHOOK_SECRET);
       return NextResponse.json({ error: 'Invalid signature' }, { status: 401 });
     }
+    console.log('Signature verified, processing event...');
 
     const event = JSON.parse(payload);
     const { triggerEvent, payload: eventPayload } = event;
     console.log('Processing event:', triggerEvent);
+    console.log('Event payload:', eventPayload);
 
     // Get the base URL from the request
     const protocol = process.env.NODE_ENV === 'development' ? 'http' : 'https';
@@ -47,6 +48,7 @@ export async function POST(req: Request) {
 
     switch (triggerEvent) {
       case 'BOOKING_CANCELLED':
+        console.log('Handling BOOKING_CANCELLED for bookingId:', eventPayload.bookingId);
         await fetch(`${baseUrl}/api/bookings`, {
           method: 'POST',
           headers: {
@@ -64,7 +66,7 @@ export async function POST(req: Request) {
       case 'BOOKING_RESCHEDULED':
         const { bookingId, rescheduleId, startTime, endTime } = eventPayload;
         const duration = (new Date(endTime).getTime() - new Date(startTime).getTime()) / (1000 * 60);
-        
+        console.log('Handling BOOKING_RESCHEDULED:', { bookingId, rescheduleId, startTime, endTime, duration });
         // First, delete the old booking
         await fetch(`${baseUrl}/api/bookings`, {
           method: 'POST',
@@ -78,7 +80,6 @@ export async function POST(req: Request) {
             }
           })
         });
-
         // Then create a new booking with the rescheduled details
         await fetch(`${baseUrl}/api/bookings`, {
           method: 'POST',
@@ -108,6 +109,7 @@ export async function POST(req: Request) {
         console.log('Unhandled event type:', triggerEvent);
     }
 
+    console.log('Webhook processing complete.');
     return NextResponse.json({ success: true });
   } catch (error) {
     console.error('Webhook error:', error);

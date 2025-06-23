@@ -8,21 +8,7 @@ const supabaseAdmin = createClient(
   process.env.SUPABASE_SERVICE_ROLE_KEY!
 );
 
-interface Booking {
-  attendee_email: string;
-  attendee_name: string;
-  duration: number;
-  event_type: string;
-  status: string;
-}
-
 export async function GET() {
-  // Fetch all users from Supabase Auth
-  const { data: users, error: usersError } = await supabaseAdmin.auth.admin.listUsers();
-  if (usersError) {
-    return NextResponse.json({ error: usersError.message }, { status: 500 });
-  }
-
   // Fetch all confirmed bookings
   const { data: bookings, error: bookingsError } = await supabaseAdmin
     .from('bookings')
@@ -31,38 +17,27 @@ export async function GET() {
   if (bookingsError) {
     return NextResponse.json({ error: bookingsError.message }, { status: 500 });
   }
-
-  // Map bookings by attendee email
-  const bookingsByEmail: Record<string, Booking[]> = {};
+  // Group bookings by attendee email
+  const userMap = new Map();
   bookings?.forEach(booking => {
-    if (!bookingsByEmail[booking.attendee_email]) {
-      bookingsByEmail[booking.attendee_email] = [];
+    const email = booking.attendee_email;
+    const name = booking.attendee_name || email.split('@')[0];
+    if (!userMap.has(email)) {
+      userMap.set(email, {
+        email,
+        name,
+        totalOwed: 0,
+        bookingCount: 0
+      });
     }
-    bookingsByEmail[booking.attendee_email].push(booking);
+    const user = userMap.get(email);
+    user.bookingCount++;
+    if (booking.duration && booking.event_type) {
+      const sessionAmount = calculateSessionAmount(booking.duration, booking.event_type);
+      user.totalOwed += sessionAmount;
+    }
   });
-
-  // Build user list with amounts
-  const userList = users?.users.map(user => {
-    const email = user.email;
-    const name = user.user_metadata?.full_name || email?.split('@')[0] || 'User';
-    const userBookings = email ? bookingsByEmail[email] || [] : [];
-    let totalOwed = 0;
-    const bookingCount = userBookings.length;
-    userBookings.forEach(booking => {
-      if (booking.duration && booking.event_type) {
-        totalOwed += calculateSessionAmount(booking.duration, booking.event_type);
-      }
-    });
-    return {
-      email,
-      name,
-      totalOwed,
-      bookingCount,
-    };
-  }) || [];
-
-  // Sort by total owed descending
-  userList.sort((a, b) => b.totalOwed - a.totalOwed);
-
+  // Convert map to array and sort by total owed (descending)
+  const userList = Array.from(userMap.values()).sort((a, b) => b.totalOwed - a.totalOwed);
   return NextResponse.json(userList);
 } 

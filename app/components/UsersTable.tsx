@@ -35,7 +35,7 @@ export default function UsersTable() {
   useEffect(() => {
     fetchUsers();
   }, []);
-
+ 
   const handleRefresh = fetchUsers;
 
   const handleMarkAsPaid = (userEmail: string) => {
