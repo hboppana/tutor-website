@@ -14,7 +14,6 @@ export default function UsersTable() {
   const [users, setUsers] = useState<UserWithAmount[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [paidUsers, setPaidUsers] = useState<Set<string>>(new Set());
 
   const fetchUsers = async () => {
     try {
@@ -34,23 +33,17 @@ export default function UsersTable() {
 
   useEffect(() => {
     fetchUsers();
+
+    // Set up polling to refresh data every 5 seconds
+    const interval = setInterval(fetchUsers, 5000);
+
+    return () => clearInterval(interval);
   }, []);
  
   const handleRefresh = fetchUsers;
 
-  const handleMarkAsPaid = (userEmail: string) => {
-    setPaidUsers(prev => new Set([...prev, userEmail]));
-  };
-
-  const handleMarkAsUnpaid = (userEmail: string) => {
-    setPaidUsers(prev => {
-      const newSet = new Set(prev);
-      newSet.delete(userEmail);
-      return newSet;
-    });
-  };
-
-  const isUserPaid = (userEmail: string) => paidUsers.has(userEmail);
+  // Calculate total outstanding (same as total amount owed from all users)
+  const totalOutstanding = users.reduce((sum, user) => sum + user.totalOwed, 0);
 
   if (isLoading) {
     return (
@@ -133,12 +126,6 @@ export default function UsersTable() {
                   <th className="text-right py-3 px-2 text-white/80 font-medium text-sm font-['Poppins']">
                     Amount Owed
                   </th>
-                  <th className="text-center py-3 px-2 text-white/80 font-medium text-sm font-['Poppins']">
-                    Status
-                  </th>
-                  <th className="text-center py-3 px-2 text-white/80 font-medium text-sm font-['Poppins']">
-                    Actions
-                  </th>
                 </tr>
               </thead>
               <tbody>
@@ -148,9 +135,7 @@ export default function UsersTable() {
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: index * 0.05 }}
-                    className={`border-b border-white/10 hover:bg-white/5 transition-colors ${
-                      isUserPaid(user.email) ? 'bg-green-500/10' : ''
-                    }`}
+                    className="border-b border-white/10 hover:bg-white/5 transition-colors"
                   >
                     <td className="py-3 px-2 text-white font-['Poppins']">
                       {user.name}
@@ -164,34 +149,6 @@ export default function UsersTable() {
                     <td className="py-3 px-2 text-right text-white font-semibold font-['Poppins']">
                       ${user.totalOwed.toFixed(2)}
                     </td>
-                    <td className="py-3 px-2 text-center">
-                      {isUserPaid(user.email) ? (
-                        <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-green-500/20 text-green-300 font-['Poppins']">
-                          Paid
-                        </span>
-                      ) : (
-                        <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-yellow-500/20 text-yellow-300 font-['Poppins']">
-                          Outstanding
-                        </span>
-                      )}
-                    </td>
-                    <td className="py-3 px-2 text-center">
-                      {isUserPaid(user.email) ? (
-                        <button
-                          onClick={() => handleMarkAsUnpaid(user.email)}
-                          className="text-xs px-2 py-1 bg-red-500/20 text-red-300 rounded hover:bg-red-500/30 transition-colors font-['Poppins']"
-                        >
-                          Mark Unpaid
-                        </button>
-                      ) : (
-                        <button
-                          onClick={() => handleMarkAsPaid(user.email)}
-                          className="text-xs px-2 py-1 bg-green-500/20 text-green-300 rounded hover:bg-green-500/30 transition-colors font-['Poppins']"
-                        >
-                          Mark Paid
-                        </button>
-                      )}
-                    </td>
                   </motion.tr>
                 ))}
               </tbody>
@@ -204,17 +161,7 @@ export default function UsersTable() {
             <div className="flex justify-between items-center text-white/80 font-['Poppins']">
               <span className="text-sm">Total Users: {users.length}</span>
               <span className="text-sm">
-                Total Outstanding: ${users.reduce((sum, user) => 
-                  isUserPaid(user.email) ? sum : sum + user.totalOwed, 0
-                ).toFixed(2)}
-              </span>
-            </div>
-            <div className="flex justify-between items-center text-white/80 font-['Poppins'] mt-2">
-              <span className="text-sm">Paid Users: {paidUsers.size}</span>
-              <span className="text-sm">
-                Total Collected: ${users.reduce((sum, user) => 
-                  isUserPaid(user.email) ? sum + user.totalOwed : sum, 0
-                ).toFixed(2)}
+                Total Outstanding: ${totalOutstanding.toFixed(2)}
               </span>
             </div>
           </div>

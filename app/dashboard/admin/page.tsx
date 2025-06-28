@@ -7,7 +7,13 @@ import { motion } from 'framer-motion';
 import Image from 'next/image';
 import ScheduleManagementCard from '@/app/components/ScheduleManagementCard';
 import UsersTable from '@/app/components/UsersTable';
-import { calculateTotalAmountOwedForAllTutees, BookingAmount } from '@/app/lib/booking-calculations';
+
+export interface UserWithAmount {
+  email: string;
+  name: string;
+  totalOwed: number;
+  bookingCount: number;
+}
 
 export default function AdminDashboard() {
   const router = useRouter();
@@ -15,6 +21,23 @@ export default function AdminDashboard() {
   const [bookingCount, setBookingCount] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
   const [username, setUsername] = useState('');
+
+  const fetchUserData = async () => {
+    try {
+      const res = await fetch('/api/admin-users-with-amounts');
+      if (!res.ok) throw new Error('Failed to fetch users');
+      const userData: UserWithAmount[] = await res.json();
+      
+      // Calculate total amount owed from all users
+      const totalAmount = userData.reduce((sum, user) => sum + user.totalOwed, 0);
+      const totalBookings = userData.reduce((sum, user) => sum + user.bookingCount, 0);
+      
+      setTotalOwed(totalAmount);
+      setBookingCount(totalBookings);
+    } catch (error) {
+      console.error('Error fetching user data:', error);
+    }
+  };
 
   useEffect(() => {
     const checkAdmin = async () => {
@@ -29,22 +52,16 @@ export default function AdminDashboard() {
       // Set username from user metadata or email
       setUsername(user.user_metadata?.full_name || user.email?.split('@')[0] || 'Admin');
 
-      // Calculate total amount owed from all confirmed bookings
-      const bookingData: BookingAmount = await calculateTotalAmountOwedForAllTutees();
-      setTotalOwed(bookingData.totalOwed);
-      setBookingCount(bookingData.bookingCount);
+      // Fetch user data and calculate totals
+      await fetchUserData();
 
       setIsLoading(false);
     };
 
     checkAdmin();
 
-    // Set up polling to refresh total amount owed every 5 seconds
-    const interval = setInterval(async () => {
-      const bookingData: BookingAmount = await calculateTotalAmountOwedForAllTutees();
-      setTotalOwed(bookingData.totalOwed);
-      setBookingCount(bookingData.bookingCount);
-    }, 5000);
+    // Set up polling to refresh data every 5 seconds
+    const interval = setInterval(fetchUserData, 5000);
 
     return () => clearInterval(interval);
   }, [router]);
