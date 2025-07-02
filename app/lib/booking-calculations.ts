@@ -36,14 +36,13 @@ export async function calculateAmountOwedForUser(userEmail: string): Promise<Boo
   const { data: bookings, error } = await supabase
     .from('bookings')
     .select('duration, event_type, status')
-    .eq('attendee_email', userEmail)
+    .eq('billing_email', userEmail)
     .eq('status', 'confirmed');
-  
-  console.log('Calculating amount owed for', userEmail, ':', { bookings, error });
   
   if (error) {
     return { totalOwed: 0, bookingCount: 0 };
   }
+  
   let totalOwed = 0;
   const bookingCount = bookings?.length || 0;
   bookings?.forEach(booking => {
@@ -53,7 +52,6 @@ export async function calculateAmountOwedForUser(userEmail: string): Promise<Boo
     }
   });
   
-  console.log('Final calculation for', userEmail, ':', { totalOwed, bookingCount });
   return { totalOwed, bookingCount };
 }
 
@@ -81,15 +79,15 @@ export async function getAllUsersWithAmounts(): Promise<UserWithAmount[]> {
   const supabase = createClient();
   const { data: bookings, error } = await supabase
     .from('bookings')
-    .select('attendee_email, attendee_name, duration, event_type, status')
+    .select('billing_email, attendee_name, duration, event_type, status')
     .eq('status', 'confirmed');
   if (error) {
     return [];
   }
-  // Group bookings by attendee email
+  // Group bookings by billing email
   const userMap = new Map<string, UserWithAmount>();
   bookings?.forEach(booking => {
-    const email = booking.attendee_email;
+    const email = booking.billing_email;
     const name = booking.attendee_name || email.split('@')[0];
     if (!userMap.has(email)) {
       userMap.set(email, {

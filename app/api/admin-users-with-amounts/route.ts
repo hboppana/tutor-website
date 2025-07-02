@@ -19,16 +19,16 @@ export async function GET() {
     // Fetch all confirmed bookings
     const { data: bookings, error: bookingsError } = await supabaseAdmin
       .from('bookings')
-      .select('attendee_email, attendee_name, duration, event_type, status')
+      .select('billing_email, attendee_name, duration, event_type, status')
       .eq('status', 'confirmed');
     if (bookingsError) {
       return NextResponse.json({ error: bookingsError.message }, { status: 500 });
     }
 
-    // Create a map of booking amounts by email
+    // Create a map of booking amounts by billing email
     const bookingMap = new Map();
     bookings?.forEach(booking => {
-      const email = booking.attendee_email;
+      const email = booking.billing_email;
       if (!bookingMap.has(email)) {
         bookingMap.set(email, {
           totalOwed: 0,

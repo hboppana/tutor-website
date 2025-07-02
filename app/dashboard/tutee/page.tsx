@@ -213,11 +213,10 @@ export default function TuteeDashboard() {
               >
                 <div className="px-4 py-5 sm:p-6">
                   <h3 className="text-lg font-medium text-white mb-4 font-['Poppins']">Notes</h3>
-                  <div className="bg-white/10 rounded-lg p-4 min-h-[150px]">
-                    <textarea 
-                      className="w-full h-full bg-transparent text-white placeholder-white/50 resize-none focus:outline-none font-['Poppins']"
-                      placeholder="Add your notes here..."
-                    />
+                  <div className="bg-white/10 rounded-lg p-4 min-h-[150px] flex items-center justify-center">
+                    <div className="text-center">
+                      <div className="text-white/80 text-lg font-['Poppins']">New Feature Coming Soon! 🚀</div>
+                    </div>
                   </div>
                 </div>
               </motion.div>
@@ -232,6 +231,23 @@ export default function TuteeDashboard() {
             >
               <div className="px-4 py-5 sm:p-6 w-full max-w-lg">
                 <h3 className="text-3xl md:text-4xl font-medium text-white mb-6 font-['Poppins']">Schedule Management</h3>
+                
+                {/* Important Note */}
+                <div className="mb-6 p-4 bg-blue-500/10 border border-blue-500/20 rounded-lg">
+                  <div className="flex items-start gap-3">
+                    <svg className="w-5 h-5 text-blue-400 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                      <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd" />
+                    </svg>
+                    <div>
+                      <h4 className="text-blue-300 font-medium text-sm mb-1">Important Booking Note</h4>
+                      <p className="text-blue-200 text-xs leading-relaxed">
+                        When booking a session, please set the email to whoever will actually join the meeting. 
+                        <strong> You will still be billed for the session</strong> regardless of the attendee email.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                
                 <div className="bg-gradient-to-br from-blue-500/10 to-indigo-500/10 rounded-xl overflow-hidden border border-white/10 shadow-2xl h-[400px]">
                   <ScheduleManagementCard />
                 </div>

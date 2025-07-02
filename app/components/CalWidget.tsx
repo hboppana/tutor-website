@@ -90,6 +90,16 @@ export default function CalWidget({
               return;
             }
 
+            // Get the authenticated user's email directly in the callback
+            const supabase = createClient();
+            const { data: { user } } = await supabase.auth.getUser();
+            const authenticatedUserEmail = user?.email;
+            
+            // Always use the authenticated user's email for billing purposes
+            const billingEmail = authenticatedUserEmail || booking.attendees[0].email;
+
+            console.log('Creating booking with billing email:', billingEmail, 'for authenticated user:', authenticatedUserEmail);
+
             await fetch('/api/bookings', {
               method: 'POST',
               headers: {
@@ -108,6 +118,7 @@ export default function CalWidget({
                   attendee_name: booking.attendees[0].name,
                   attendee_email: booking.attendees[0].email,
                   attendee_timezone: booking.attendees[0].timeZone,
+                  billing_email: billingEmail,
                   status: 'confirmed'
                 }
               })
@@ -116,7 +127,8 @@ export default function CalWidget({
             if (onBookingSuccess) {
               onBookingSuccess(bookingData);
             }
-          } catch {
+          } catch (error) {
+            console.error('Error creating booking:', error);
             // Silent error handling
           }
         }

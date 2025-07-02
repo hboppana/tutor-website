@@ -99,6 +99,7 @@ export async function POST(req: Request) {
               attendee_name: eventPayload.attendees[0].name,
               attendee_email: eventPayload.attendees[0].email,
               attendee_timezone: eventPayload.attendees[0].timeZone,
+              billing_email: eventPayload.attendees[0].email,
               status: 'confirmed'
             }
           })

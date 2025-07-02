@@ -60,16 +60,16 @@ export async function POST(req: NextRequest) {
         // Check ALL bookings for this email (both attendee and organizer) to see their status
         const { data: allBookings, error: allBookingsError } = await supabase
           .from('bookings')
-          .select('id, cal_booking_id, attendee_email, organizer_email, status')
-          .or(`attendee_email.eq.${email},organizer_email.eq.${email}`);
+          .select('id, cal_booking_id, billing_email, organizer_email, status')
+          .or(`billing_email.eq.${email},organizer_email.eq.${email}`);
         
         console.log('ALL bookings for', email, ':', allBookings);
         console.log('All bookings error:', allBookingsError);
         
         const { data: confirmedBookings, error: fetchError } = await supabase
           .from('bookings')
-          .select('id, cal_booking_id, attendee_email, organizer_email, status')
-          .or(`attendee_email.eq.${email},organizer_email.eq.${email}`)
+          .select('id, cal_booking_id, billing_email, organizer_email, status')
+          .or(`billing_email.eq.${email},organizer_email.eq.${email}`)
           .eq('status', 'confirmed');
 
         console.log('Found confirmed bookings for', email, ':', confirmedBookings);
@@ -80,9 +80,9 @@ export async function POST(req: NextRequest) {
           const { data: updatedBookings, error: updateError } = await supabase
             .from('bookings')
             .update({ status: 'paid' })
-            .or(`attendee_email.eq.${email},organizer_email.eq.${email}`)
+            .or(`billing_email.eq.${email},organizer_email.eq.${email}`)
             .eq('status', 'confirmed')
-            .select('id, cal_booking_id, attendee_email, organizer_email, status');
+            .select('id, cal_booking_id, billing_email, organizer_email, status');
 
           console.log('Updated bookings to paid:', updatedBookings);
           console.log('Update error:', updateError);

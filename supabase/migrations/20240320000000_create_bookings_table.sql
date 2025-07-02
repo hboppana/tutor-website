@@ -11,6 +11,7 @@ CREATE TABLE bookings (
     attendee_name TEXT NOT NULL,
     attendee_email TEXT NOT NULL,
     attendee_timezone TEXT NOT NULL,
+    billing_email TEXT NOT NULL,
     status TEXT NOT NULL CHECK (status IN ('confirmed', 'cancelled', 'rescheduled')),
     created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
     updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
@@ -20,6 +21,7 @@ CREATE TABLE bookings (
 CREATE INDEX idx_cal_booking_id ON bookings(cal_booking_id);
 CREATE INDEX idx_organizer_email ON bookings(organizer_email);
 CREATE INDEX idx_attendee_email ON bookings(attendee_email);
+CREATE INDEX idx_billing_email ON bookings(billing_email);
 
 -- Create function to update updated_at timestamp
 CREATE OR REPLACE FUNCTION update_updated_at_column()
