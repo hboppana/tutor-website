@@ -1,7 +1,8 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { motion } from 'framer-motion';
+import { createClient } from '@/app/lib/client';
 
 export interface UserWithAmount {
   email: string;
@@ -14,6 +15,7 @@ export default function UsersTable() {
   const [users, setUsers] = useState<UserWithAmount[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const fetchUsersRef = useRef<() => void>(undefined);
 
   const fetchUsers = async () => {
     try {
@@ -31,13 +33,48 @@ export default function UsersTable() {
     }
   };
 
+  // Store fetchUsers in a ref so the realtime callback always has the latest
+  fetchUsersRef.current = fetchUsers;
+
   useEffect(() => {
     fetchUsers();
 
-    // Set up polling to refresh data every 5 seconds
-    const interval = setInterval(fetchUsers, 5000);
+    const supabase = createClient();
 
-    return () => clearInterval(interval);
+    // Listen for changes in bookings table
+    const bookingsSub = supabase.channel('bookings-changes')
+      .on(
+        'postgres_changes',
+        {
+          event: '*',
+          schema: 'public',
+          table: 'bookings',
+        },
+        () => {
+          if (fetchUsersRef.current) fetchUsersRef.current();
+        }
+      )
+      .subscribe();
+
+    // Listen for changes in auth.users table
+    const usersSub = supabase.channel('users-changes')
+      .on(
+        'postgres_changes',
+        {
+          event: '*',
+          schema: 'auth',
+          table: 'users',
+        },
+        () => {
+          if (fetchUsersRef.current) fetchUsersRef.current();
+        }
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(bookingsSub);
+      supabase.removeChannel(usersSub);
+    };
   }, []);
  
   const handleRefresh = fetchUsers;
