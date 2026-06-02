@@ -62,10 +62,10 @@ export default function CalWidget({
       cal("ui", {
         hideEventTypeDetails: false,
         layout: "month_view",
-        theme: "light",
+        theme: "dark",
         styles: {
           branding: {
-            brandColor: "#3B82F6"
+            brandColor: "#7dd3fc"
           }
         }
       });

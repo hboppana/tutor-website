@@ -1,83 +1,8 @@
 'use client';
 import { motion, useScroll, useTransform, AnimatePresence } from 'framer-motion';
 import { useRef, useEffect, useState, TouchEvent } from 'react';
-import Image from 'next/image';
 import Link from 'next/link';
-import React from 'react';
 import { getCalApi } from "@calcom/embed-react";
-
-// GridLines component
-const GridLines = () => {
-  return (
-    <div className="absolute inset-0 overflow-hidden pointer-events-none">
-      <div className="absolute inset-0" style={{
-        backgroundImage: `
-          linear-gradient(to right, rgba(0, 0, 0, 0.15) 1px, transparent 1px),
-          linear-gradient(to bottom, rgba(0, 0, 0, 0.15) 1px, transparent 1px)
-        `,
-        backgroundSize: '50px 50px',
-        maskImage: 'linear-gradient(to bottom, transparent, rgba(0, 0, 0, 0.8), transparent)'
-      }} />
-    </div>
-  );
-};
-
-interface ParticleProps {
-  x: number;
-  y: number;
-  size: number;
-  duration: number;
-  delay: number;
-}
-
-// Particle component
-const Particle = ({ x, y, size, duration, delay }: ParticleProps) => {
-  return (
-    <motion.div
-      className="absolute rounded-full bg-white/60 backdrop-blur-sm shadow-lg"
-      style={{
-        width: size,
-        height: size,
-        x,
-        y,
-      }}
-      animate={{
-        y: [y, y - 100],
-        opacity: [0, 0.8, 0],
-      }}
-      transition={{
-        duration,
-        delay,
-        repeat: Infinity,
-        ease: "linear",
-      }}
-    />
-  );
-};
-
-// Particle container component
-const ParticleContainer = () => {
-  const [particles, setParticles] = useState<ParticleProps[]>([]);
-
-  useEffect(() => {
-    const newParticles = Array.from({ length: 20 }, () => ({
-      x: Math.random() * window.innerWidth,
-      y: Math.random() * window.innerHeight,
-      size: Math.random() * 8 + 4,
-      duration: Math.random() * 3 + 2,
-      delay: Math.random() * 2,
-    }));
-    setParticles(newParticles);
-  }, []);
-
-  return (
-    <div className="absolute inset-0 overflow-hidden pointer-events-none">
-      {particles.map((particle, index) => (
-        <Particle key={index} {...particle} />
-      ))}
-    </div>
-  );
-};
 
 interface Testimonial {
   name: string;
@@ -126,7 +51,7 @@ const TestimonialsCarousel = ({ testimonials }: { testimonials: Testimonial[] })
       <div className="flex items-center justify-center">
         <button
           onClick={() => setCurrentIndex((prev) => (prev - 1 + testimonials.length) % testimonials.length)}
-          className="hidden sm:flex items-center justify-center w-10 h-10 rounded-full bg-white/10 backdrop-blur-sm text-white hover:bg-white/20 transition-all"
+          className="hidden sm:flex items-center justify-center w-10 h-10 rounded-full border border-white/10 bg-white/[0.04] text-blue-100/70 hover:text-white hover:bg-white/10 transition-all"
         >
           ←
         </button>
@@ -142,18 +67,23 @@ const TestimonialsCarousel = ({ testimonials }: { testimonials: Testimonial[] })
               className="glass-card p-6 sm:p-8"
             >
               <div className="flex flex-col items-center text-center">
-                <div className="w-20 h-20 mb-4 rounded-full bg-blue-200/20 flex items-center justify-center text-2xl text-white">
-                  {testimonials[currentIndex].name[0]}
+                <div className="mb-5 font-display text-5xl leading-none text-sky-300/40">&ldquo;</div>
+                <p className="font-display text-lg sm:text-xl italic leading-relaxed text-white/90">
+                  {testimonials[currentIndex].text}
+                </p>
+                <div className="mt-6 flex items-center gap-3">
+                  <div className="flex h-11 w-11 items-center justify-center rounded-full bg-sky-400/15 text-base font-medium text-sky-300">
+                    {testimonials[currentIndex].name[0]}
+                  </div>
+                  <div className="text-left">
+                    <h3 className="text-sm font-semibold text-white">
+                      {testimonials[currentIndex].name}
+                    </h3>
+                    <p className="text-sm text-blue-100/50">
+                      {testimonials[currentIndex].role}
+                    </p>
+                  </div>
                 </div>
-                <h3 className="text-xl font-semibold text-white mb-1">
-                  {testimonials[currentIndex].name}
-                </h3>
-                <p className="text-blue-100 mb-4">
-                  {testimonials[currentIndex].role}
-                </p>
-                <p className="text-white text-lg italic">
-                  &quot;{testimonials[currentIndex].text}&quot;
-                </p>
               </div>
             </motion.div>
           </AnimatePresence>
@@ -161,7 +91,7 @@ const TestimonialsCarousel = ({ testimonials }: { testimonials: Testimonial[] })
 
         <button
           onClick={() => setCurrentIndex((prev) => (prev + 1) % testimonials.length)}
-          className="hidden sm:flex items-center justify-center w-10 h-10 rounded-full bg-white/10 backdrop-blur-sm text-white hover:bg-white/20 transition-all"
+          className="hidden sm:flex items-center justify-center w-10 h-10 rounded-full border border-white/10 bg-white/[0.04] text-blue-100/70 hover:text-white hover:bg-white/10 transition-all"
         >
           →
         </button>
@@ -185,6 +115,7 @@ const TestimonialsCarousel = ({ testimonials }: { testimonials: Testimonial[] })
 
 export default function Home() {
   const servicesRef = useRef<HTMLElement>(null);
+  const consultRef = useRef<HTMLElement>(null);
   const { scrollY } = useScroll();
   const buttonOpacity = useTransform(scrollY, [0, 100], [1, 0]);
 
@@ -222,7 +153,14 @@ export default function Home() {
   }, []);
 
   const scrollToServices = () => {
-    servicesRef.current?.scrollIntoView({ 
+    servicesRef.current?.scrollIntoView({
+      behavior: 'smooth',
+      block: 'start'
+    });
+  };
+
+  const scrollToConsult = () => {
+    consultRef.current?.scrollIntoView({
       behavior: 'smooth',
       block: 'start'
     });
@@ -231,320 +169,318 @@ export default function Home() {
   useEffect(() => {
     (async function () {
       const cal = await getCalApi({"namespace":"consultation"});
-      cal("ui", {"theme":"light","hideEventTypeDetails":false,"layout":"month_view"});
+      cal("ui", {"theme":"dark","hideEventTypeDetails":false,"layout":"month_view"});
     })();
   }, []);
 
   return (
-    <div className="relative min-h-screen bg-gradient-to-br from-blue-600 via-blue-400 to-blue-600 overflow-hidden font-['Poppins']">
-      {/* GridLines */}
-      <GridLines />
-      
-      {/* Particles */}
-      <ParticleContainer />
-
-      {/* Animated Waves */}
-      <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute -bottom-1 left-0 right-0">
-          <svg className="relative w-full h-[100px] animate-wave" viewBox="0 0 1440 320" preserveAspectRatio="none">
-            <path
-              fill="rgba(59, 130, 246, 0.1)"
-              d="M0,192L48,197.3C96,203,192,213,288,229.3C384,245,480,267,576,250.7C672,235,768,181,864,181.3C960,181,1056,235,1152,234.7C1248,235,1344,181,1392,154.7L1440,128L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"
-            ></path>
-          </svg>
+    <div className="relative min-h-screen overflow-hidden bg-[#0a1628]">
+      {/* Hero Section — refined editorial redesign */}
+      <section className="relative z-20 min-h-screen overflow-hidden bg-[#0a1628]">
+        {/* Ambient glow + subtle grid */}
+        <div className="pointer-events-none absolute inset-0">
+          <div className="absolute left-1/2 top-[-15%] h-[600px] w-[1000px] -translate-x-1/2 rounded-full bg-blue-500/10 blur-[140px]" />
+          <div
+            className="absolute inset-0"
+            style={{
+              backgroundImage: `
+                linear-gradient(to right, rgba(255,255,255,0.035) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(255,255,255,0.035) 1px, transparent 1px)
+              `,
+              backgroundSize: '64px 64px',
+              maskImage: 'radial-gradient(ellipse 80% 60% at 50% 40%, black 20%, transparent 75%)',
+              WebkitMaskImage: 'radial-gradient(ellipse 80% 60% at 50% 40%, black 20%, transparent 75%)',
+            }}
+          />
         </div>
-        <div className="absolute -bottom-1 left-0 right-0">
-          <svg className="relative w-full h-[100px] animate-wave-delayed" viewBox="0 0 1440 320" preserveAspectRatio="none">
-            <path
-              fill="rgba(59, 130, 246, 0.05)"
-              d="M0,64L48,80C96,96,192,128,288,128C384,128,480,96,576,90.7C672,85,768,107,864,128C960,149,1056,171,1152,165.3C1248,160,1344,128,1392,112L1440,96L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"
-            ></path>
-          </svg>
-        </div>
-      </div>
 
-      {/* Hero Section with Animation */}
-      <motion.section 
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8 }}
-        className="min-h-screen flex items-center justify-center px-4 sm:px-6 relative z-10"
-      >
-        {/* Login/Signup Buttons */}
-        <div className="absolute top-4 sm:top-8 right-4 sm:right-8 flex gap-2 sm:gap-4 z-50">
-          <Link href="/login" className="block relative z-50">
-            <button
-              className="btn-primary w-full"
+        {/* Nav */}
+        <nav className="relative z-30 mx-auto flex max-w-6xl items-center justify-between px-6 py-6 sm:px-8">
+          <div className="flex items-center gap-3">
+            <span className="flex h-9 w-9 items-center justify-center rounded-lg bg-white text-[#0a1628]">
+              <svg className="h-5 w-5" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                <path d="M21.731 2.269a2.625 2.625 0 0 0-3.712 0l-1.157 1.157 3.712 3.712 1.157-1.157a2.625 2.625 0 0 0 0-3.712ZM19.513 8.199l-3.712-3.712-12.15 12.15a5.25 5.25 0 0 0-1.32 2.214l-.8 2.685a.75.75 0 0 0 .933.933l2.685-.8a5.25 5.25 0 0 0 2.214-1.32L19.513 8.2Z" />
+              </svg>
+            </span>
+            <div className="leading-tight">
+              <div className="text-sm font-medium text-white">Hemanshu Boppana</div>
+              <div className="text-xs tracking-wide text-blue-200/60">Academic Tutor</div>
+            </div>
+          </div>
+          <div className="flex items-center gap-1 sm:gap-2">
+            <Link
+              href="/login"
+              className="rounded-full px-4 py-2 text-sm font-medium text-blue-100/80 transition-colors hover:text-white"
             >
               Log In
-            </button>
-          </Link>
-          <Link href="/signup" className="block relative z-50">
-            <button
-              className="btn-secondary w-full"
+            </Link>
+            <Link
+              href="/signup"
+              className="rounded-full bg-white px-5 py-2 text-sm font-medium text-[#0a1628] transition-all hover:-translate-y-0.5 hover:bg-blue-50"
             >
               Sign Up
-            </button>
-          </Link>
-        </div>
-
-        <div className="flex flex-col md:flex-row items-center md:items-start justify-center md:justify-between w-full max-w-7xl mx-auto pt-16 sm:pt-0">
-          {/* Left Side: Intro */}
-          <div className="text-center md:text-left md:w-1/2 mb-8 sm:mb-12 md:mb-0">
-            <motion.h1 
-              initial={{ opacity: 0, x: -100 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ 
-                type: "spring",
-                stiffness: 50,
-                damping: 20,
-                delay: 0.3,
-                duration: 1.5
-              }}
-              className="text-3xl sm:text-4xl md:text-6xl font-normal tracking-tight mb-4 sm:mb-6 leading-tight"
-            >
-              <span className="text-blue-950 font-semibold tracking-wide">Hi, I&apos;m Hemanshu Boppana</span>
-            </motion.h1>
-            <motion.p 
-              initial={{ opacity: 0, x: 100 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ 
-                type: "spring",
-                stiffness: 50,
-                damping: 20,
-                delay: 0.6,
-                duration: 1.5
-              }}
-              className="text-lg sm:text-xl md:text-2xl text-white mb-6 sm:mb-8 leading-relaxed font-normal italic"
-            >
-              Your Personal Academic Guide
-            </motion.p>
-            <motion.div 
-              initial={{ opacity: 0, y: 50 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ 
-                type: "spring",
-                stiffness: 50,
-                damping: 20,
-                delay: 0.9,
-                duration: 1.5
-              }}
-              className="flex flex-col sm:flex-row items-center justify-center md:justify-start gap-4 sm:gap-6 mt-4 w-full max-w-2xl mx-auto md:mx-0"
-            >
-              <button 
-                onClick={scrollToServices}
-                className="btn-primary w-full sm:w-auto min-w-[200px]"
-              >
-                View Services
-              </button>
-            </motion.div>
+            </Link>
           </div>
+        </nav>
 
-          {/* Right Side: About Me */}
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.3 }}
-            viewport={{ once: false }}
-            className="md:w-1/2 md:pl-12 text-center md:text-left mt-12 md:mt-0"
+        {/* Hero content */}
+        <div className="relative z-20 mx-auto flex min-h-[calc(100vh-92px)] max-w-4xl flex-col items-center justify-center px-6 py-16 text-center sm:px-8">
+          <motion.p
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            className="mb-6 text-xs font-medium uppercase tracking-[0.25em] text-sky-300/80"
           >
-            <motion.h2 
-              initial={{ opacity: 0, x: 20 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.5 }}
-              className="text-3xl sm:text-4xl font-semibold text-white mb-8 bg-gradient-to-r from-blue-200 to-white bg-clip-text text-transparent"
+            K–12 Tutoring &amp; Test Prep
+          </motion.p>
+
+          <motion.h1
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.1 }}
+            style={{ fontFamily: 'var(--font-playfair)' }}
+            className="text-5xl font-medium leading-[1.02] tracking-tight text-white sm:text-7xl md:text-8xl"
+          >
+            Where it finally{' '}
+            <span className="italic text-sky-300">clicks.</span>
+          </motion.h1>
+
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.2 }}
+            className="mt-8 max-w-xl text-lg leading-relaxed text-blue-100/70 sm:text-xl"
+          >
+            One-on-one tutoring in math, science, reading, and SAT/ACT prep —
+            built around how your student actually learns. Real understanding,
+            real improvement, real confidence.
+          </motion.p>
+
+          {/* CTAs */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.4 }}
+            className="mt-10 flex flex-col items-center gap-3 sm:flex-row"
+          >
+            <button
+              onClick={scrollToServices}
+              className="rounded-full bg-white px-7 py-3.5 text-base font-medium text-[#0a1628] transition-all hover:-translate-y-0.5 hover:bg-blue-50"
             >
-              About Me
-            </motion.h2>
-            <motion.div 
-              initial={{ opacity: 0 }}
-              whileInView={{ opacity: 1 }}
-              transition={{ duration: 0.5, delay: 0.2 }}
-              className="space-y-6"
+              View Services
+            </button>
+            <button
+              data-cal-namespace="consultation"
+              data-cal-link="hemanshu-boppana-inqnfj/consultation"
+              data-cal-config='{"layout":"month_view","theme":"dark"}'
+              className="group inline-flex items-center gap-2 rounded-full border border-white/20 px-7 py-3.5 text-base font-medium text-white transition-all hover:-translate-y-0.5 hover:bg-white/5"
             >
-              <p className="text-white font-normal leading-relaxed text-xl">
-                Computer Science & Statistics student at UF, passionate about helping students achieve their academic goals through personalized tutoring.
-              </p>
-              <ul className="text-white space-y-4 font-normal text-xl">
-                <motion.li 
-                  initial={{ opacity: 0, x: -20 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  transition={{ duration: 0.3, delay: 0.3 }}
-                  className="flex items-center space-x-3"
-                >
-                  <svg className="w-8 h-8 text-blue-200" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M4 19.5V4.5C4 3.67157 4.67157 3 5.5 3H18.5C19.3284 3 20 3.67157 20 4.5V19.5C20 20.3284 19.3284 21 18.5 21H5.5C4.67157 21 4 20.3284 4 19.5Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                    <path d="M4 16H20" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                    <path d="M8 3V21" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                  </svg>
-                  <span>3+ Years of Tutoring Experience</span>
-                </motion.li>
-                <motion.li 
-                  initial={{ opacity: 0, x: -20 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  transition={{ duration: 0.3, delay: 0.4 }}
-                  className="flex items-center space-x-3"
-                >
-                  <svg className="w-8 h-8 text-blue-200" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                    <path d="M12 6V12L16 14" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                  </svg>
-                  <span>1560 SAT Score</span>
-                </motion.li>
-                <motion.li 
-                  initial={{ opacity: 0, x: -20 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  transition={{ duration: 0.3, delay: 0.5 }}
-                  className="flex items-center space-x-3"
-                >
-                  <svg className="w-8 h-8 text-blue-200" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M9 3H4C3.44772 3 3 3.44772 3 4V9C3 9.55228 3.44772 10 4 10H9C9.55228 10 10 9.55228 10 9V4C10 3.44772 9.55228 3 9 3Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                    <path d="M20 3H15C14.4477 3 14 3.44772 14 4V9C14 9.55228 14.4477 10 15 10H20C20.5523 10 21 9.55228 21 9V4C21 3.44772 20.5523 3 20 3Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                    <path d="M9 14H4C3.44772 14 3 14.4477 3 15V20C3 20.5523 3.44772 21 4 21H9C9.55228 21 10 20.5523 10 20V15C10 14.4477 9.55228 14 9 14Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                    <path d="M20 14H15C14.4477 14 14 14.4477 14 15V20C14 20.5523 14.4477 21 15 21H20C20.5523 21 21 20.5523 21 20V15C21 14.4477 20.5523 14 20 14Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                  </svg>
-                  <span>Machine Learning Researcher at UF</span>
-                </motion.li>
-              </ul>
-            </motion.div>
+              Book a free consultation
+              <span className="transition-transform group-hover:translate-x-0.5">→</span>
+            </button>
           </motion.div>
         </div>
 
-        {/* Animated Scroll Button */}
-        <motion.div
+        {/* Scroll cue */}
+        <motion.button
           style={{ opacity: buttonOpacity }}
-          className="absolute bottom-8 left-1/2 transform -translate-x-1/2 cursor-pointer"
           onClick={scrollToServices}
-          whileHover={{ y: 5 }}
-          whileTap={{ scale: 0.95 }}
+          aria-label="Scroll to services"
+          className="absolute bottom-8 left-1/2 z-20 -translate-x-1/2 text-blue-200/50 transition-colors hover:text-white"
         >
-          <div className="bg-white/10 backdrop-blur-sm p-3 rounded-full border border-white/20 shadow-lg">
-            <Image
-              src="/scroll-arrow.svg"
-              alt="Scroll down"
-              width={40}
-              height={40}
-              className="animate-bounce text-white"
-            />
-          </div>
-        </motion.div>
-      </motion.section>
+          <svg className="h-6 w-6 animate-bounce" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M19 14l-7 7m0 0l-7-7m7 7V3" />
+          </svg>
+        </motion.button>
+      </section>
 
-      {/* Separator */}
-      <div className="w-full h-1 bg-gradient-to-r from-blue-100 via-blue-300 to-blue-100" />
+      {/* About Section */}
+      <section id="about" className="border-t border-white/5 py-24 px-6 sm:px-8 scroll-mt-20">
+        <div className="mx-auto grid max-w-5xl items-center gap-12 lg:grid-cols-2 lg:gap-16">
+          {/* Intro */}
+          <motion.div
+            initial={{ opacity: 0, y: 24 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            viewport={{ once: true, margin: "-100px" }}
+          >
+            <p className="mb-4 text-xs font-medium uppercase tracking-[0.25em] text-sky-300/80">
+              About me
+            </p>
+            <h2 className="font-display text-3xl sm:text-5xl font-medium tracking-tight text-white">
+              Hi, I&apos;m <span className="italic text-sky-300">Hemanshu.</span>
+            </h2>
+            <p className="mt-6 text-lg leading-relaxed text-blue-100/70">
+              I love making hard things make sense. Over the past five years I&apos;ve
+              worked one-on-one with K–12 students — turning frustration into
+              understanding, one session at a time.
+            </p>
+            <p className="mt-4 leading-relaxed text-blue-100/60">
+              I hold myself to the same standard I set for my students, and I build
+              every session around how each one actually learns.
+            </p>
+            <div className="mt-8 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.04] px-4 py-2 text-sm text-blue-100/80">
+              <svg className="h-4 w-4 text-sky-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17.657 16.657L13.414 20.9a2 2 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+              </svg>
+              Trusted by families across Central Florida
+            </div>
+          </motion.div>
+
+          {/* Stats */}
+          <motion.div
+            initial="hidden"
+            whileInView="show"
+            viewport={{ once: true, margin: "-100px" }}
+            variants={{ hidden: {}, show: { transition: { staggerChildren: 0.1 } } }}
+            className="grid grid-cols-2 gap-4"
+          >
+            {[
+              { stat: '5+ yrs', label: 'One-on-one tutoring experience' },
+              { stat: '1560', label: 'SAT score' },
+              { stat: '4.7 / 3.95', label: 'GPA — high school / college' },
+              { stat: '12 APs', label: '11 fives and 1 four' },
+            ].map((s) => (
+              <motion.div
+                key={s.label}
+                variants={{ hidden: { opacity: 0, y: 12 }, show: { opacity: 1, y: 0 } }}
+                className="rounded-2xl border border-white/10 bg-white/[0.04] p-6"
+              >
+                <div className="font-display text-3xl sm:text-4xl font-medium text-white">
+                  {s.stat}
+                </div>
+                <div className="mt-2 text-sm leading-snug text-blue-100/60">{s.label}</div>
+              </motion.div>
+            ))}
+          </motion.div>
+        </div>
+      </section>
 
       {/* Services Section */}
-      <motion.section 
+      <motion.section
         ref={servicesRef}
         id="services"
-        initial={{ opacity: 0, y: 50 }}
+        initial={{ opacity: 0, y: 40 }}
         whileInView={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8, ease: "easeOut" }}
-        viewport={{ once: false, margin: "-100px" }}
-        className="py-20 px-4 scroll-mt-20"
+        transition={{ duration: 0.7, ease: "easeOut" }}
+        viewport={{ once: true, margin: "-100px" }}
+        className="border-t border-white/5 py-24 px-6 sm:px-8 scroll-mt-20"
       >
-        <div className="max-w-7xl mx-auto">
-          <motion.h2 
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.2 }}
-            viewport={{ once: false }}
-            className="text-3xl sm:text-4xl font-normal text-center text-white mb-12"
-          >
-            My Services
-          </motion.h2>
-          
-          <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
-            <motion.div 
-              initial={{ opacity: 0, x: -30 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.8, delay: 0.3 }}
-              viewport={{ once: false }}
-              className="glass-card"
-            >
-              <h3 className="text-2xl font-normal text-white mb-4">General Instruction</h3>
-              <p className="text-blue-100 mb-6 font-normal">
-                Comprehensive tutoring sessions covering various subjects and topics. Perfect for students seeking general academic support.
-              </p>
-              <div className="flex items-center justify-between">
-                <span className="text-2xl font-normal text-white">$30/hr</span>
-                <button className="btn-primary">
-                  Book Now
-                </button>
-              </div>
-            </motion.div>
+        <div className="mx-auto max-w-5xl">
+          <div className="mb-14 max-w-2xl">
+            <p className="mb-4 text-xs font-medium uppercase tracking-[0.25em] text-sky-300/80">
+              What I offer
+            </p>
+            <h2 className="font-display text-3xl sm:text-5xl font-medium tracking-tight text-white">
+              Two ways to <span className="italic text-sky-300">work together.</span>
+            </h2>
+          </div>
 
-            <motion.div 
-              initial={{ opacity: 0, x: 30 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.8, delay: 0.4 }}
-              viewport={{ once: false }}
-              className="glass-card"
-            >
-              <h3 className="text-2xl font-normal text-white mb-4">SAT/ACT Prep</h3>
-              <p className="text-blue-100 mb-6 font-normal">
-                Specialized test preparation sessions focusing on SAT and ACT strategies, practice tests, and comprehensive review.
-              </p>
-              <div className="flex items-center justify-between">
-                <span className="text-2xl font-normal text-white">$35/hr</span>
-                <button className="btn-primary">
-                  Book Now
-                </button>
-              </div>
-            </motion.div>
+          <div className="grid gap-5 md:grid-cols-2">
+            {[
+              {
+                n: '01',
+                title: 'General Instruction',
+                price: '$30',
+                desc: 'Comprehensive tutoring across subjects and topics — built for students who want steady, personalized academic support.',
+              },
+              {
+                n: '02',
+                title: 'SAT / ACT Prep',
+                price: '$35',
+                desc: 'Focused test prep: section strategy, timed practice tests, and targeted review that turns into real score gains.',
+              },
+            ].map((s, i) => (
+              <motion.div
+                key={s.n}
+                initial={{ opacity: 0, y: 24 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.1 * i }}
+                viewport={{ once: true }}
+                className="group flex flex-col rounded-2xl border border-white/10 bg-white/[0.04] p-8 transition-colors hover:border-white/20 hover:bg-white/[0.06]"
+              >
+                <div className="mb-6 font-mono text-xs text-sky-300/70">{s.n}</div>
+                <h3 className="mb-3 text-2xl font-semibold text-white">{s.title}</h3>
+                <p className="mb-8 leading-relaxed text-blue-100/60">{s.desc}</p>
+                <div className="mt-auto flex items-center justify-between border-t border-white/10 pt-6">
+                  <span className="text-lg text-white">
+                    <span className="font-display text-3xl">{s.price}</span>
+                    <span className="text-blue-100/50"> / hr</span>
+                  </span>
+                  <button onClick={scrollToConsult} className="btn-primary">
+                    Book Now
+                  </button>
+                </div>
+              </motion.div>
+            ))}
           </div>
         </div>
       </motion.section>
 
-      {/* Separator */}
-      <div className="w-full h-1 bg-gradient-to-r from-blue-100 via-blue-300 to-blue-100" />
-
       {/* Testimonials Section */}
-      <section className="py-16 px-4 sm:px-6 relative z-10">
-        <div className="max-w-7xl mx-auto">
-          <h2 className="text-3xl sm:text-4xl font-semibold text-white text-center mb-12">
-            User Testimonials
-          </h2>
+      <section className="border-t border-white/5 py-24 px-6 sm:px-8">
+        <div className="mx-auto max-w-5xl">
+          <div className="mb-14 text-center">
+            <p className="mb-4 text-xs font-medium uppercase tracking-[0.25em] text-sky-300/80">
+              In their words
+            </p>
+            <h2 className="font-display text-3xl sm:text-5xl font-medium tracking-tight text-white">
+              Results students <span className="italic text-sky-300">feel.</span>
+            </h2>
+          </div>
           <TestimonialsCarousel testimonials={testimonials} />
         </div>
       </section>
 
       {/* Consultation Section */}
-      <section className="py-16 px-4 sm:px-6 relative z-10">
-        <div className="max-w-7xl mx-auto">
-          <h2 className="text-3xl sm:text-4xl font-semibold text-white text-center mb-8">
-            Interested? Let&apos;s Chat!
+      <section ref={consultRef} className="border-t border-white/5 py-24 px-6 sm:px-8 scroll-mt-20">
+        <div className="mx-auto max-w-3xl text-center">
+          <p className="mb-4 text-xs font-medium uppercase tracking-[0.25em] text-sky-300/80">
+            Let&apos;s talk
+          </p>
+          <h2 className="font-display text-3xl sm:text-5xl font-medium tracking-tight text-white">
+            Ready to get <span className="italic text-sky-300">started?</span>
           </h2>
-          <div className="flex flex-col items-center justify-center gap-8">
-            <button 
+          <p className="mx-auto mt-5 max-w-xl text-lg leading-relaxed text-blue-100/60">
+            Book a free consultation and we&apos;ll map out a plan tailored to your goals — no commitment required.
+          </p>
+
+          <div className="mt-10 flex flex-col items-center gap-8">
+            <button
               data-cal-namespace="consultation"
               data-cal-link="hemanshu-boppana-inqnfj/consultation"
-              data-cal-config='{"layout":"month_view","theme":"light"}'
-              className="btn-primary text-xl px-8 py-4"
+              data-cal-config='{"layout":"month_view","theme":"dark"}'
+              className="btn-primary text-lg px-8 py-4"
             >
               Schedule a Consultation
             </button>
-            
-            <div className="text-center text-white space-y-4">
-              <p className="text-xl">Or reach out directly:</p>
-              <div className="flex flex-col sm:flex-row items-center justify-center gap-6 text-lg">
-                <a href="tel:+1234567890" className="flex items-center gap-2 hover:text-blue-200 transition-colors">
-                  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path>
-                  </svg>
-                  (630) 453-4655
-                </a>
-                <a href="mailto:contact@example.com" className="flex items-center gap-2 hover:text-blue-200 transition-colors">
-                  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
-                  </svg>
-                  hboppana01@gmail.com
-                </a>
-              </div>
+
+            <div className="flex flex-col items-center gap-4 text-blue-100/70 sm:flex-row sm:gap-8">
+              <a href="tel:+16304534655" className="flex items-center gap-2 transition-colors hover:text-white">
+                <svg className="h-5 w-5 text-sky-300/70" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path>
+                </svg>
+                (630) 453-4655
+              </a>
+              <a href="mailto:hboppana01@gmail.com" className="flex items-center gap-2 transition-colors hover:text-white">
+                <svg className="h-5 w-5 text-sky-300/70" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+                </svg>
+                hboppana01@gmail.com
+              </a>
             </div>
           </div>
         </div>
       </section>
+
+      {/* Footer */}
+      <footer className="border-t border-white/5 px-6 py-10 sm:px-8">
+        <div className="mx-auto flex max-w-5xl flex-col items-center justify-between gap-3 text-sm text-blue-100/40 sm:flex-row">
+          <span>© {new Date().getFullYear()} Hemanshu Boppana</span>
+          <span>Personal Academic Tutoring</span>
+        </div>
+      </footer>
     </div>
   );
 }

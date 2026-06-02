@@ -87,16 +87,16 @@ export default function UsersTable() {
       <div className="glass-card">
         <div className="px-4 py-5 sm:p-6">
           <div className="flex items-center justify-between mb-4">
-            <h3 className="text-lg font-medium text-white font-['Poppins']">Users & Outstanding Amounts</h3>
+            <h3 className="text-lg font-medium text-white">Users & Outstanding Amounts</h3>
             <button
               onClick={handleRefresh}
-              className="text-blue-400 hover:text-blue-300 text-sm font-['Poppins']"
+              className="text-sky-300 hover:text-sky-200 text-sm"
             >
               Refresh
             </button>
           </div>
           <div className="flex items-center justify-center h-32">
-            <div className="text-white/70 font-['Poppins']">Loading users...</div>
+            <div className="text-white/70">Loading users...</div>
           </div>
         </div>
       </div>
@@ -108,16 +108,16 @@ export default function UsersTable() {
       <div className="glass-card">
         <div className="px-4 py-5 sm:p-6">
           <div className="flex items-center justify-between mb-4">
-            <h3 className="text-lg font-medium text-white font-['Poppins']">Users & Outstanding Amounts</h3>
+            <h3 className="text-lg font-medium text-white">Users & Outstanding Amounts</h3>
             <button
               onClick={handleRefresh}
-              className="text-blue-400 hover:text-blue-300 text-sm font-['Poppins']"
+              className="text-sky-300 hover:text-sky-200 text-sm"
             >
               Refresh
             </button>
           </div>
           <div className="flex items-center justify-center h-32">
-            <div className="text-red-400 font-['Poppins']">{error}</div>
+            <div className="text-red-400">{error}</div>
           </div>
         </div>
       </div>
@@ -133,10 +133,10 @@ export default function UsersTable() {
     >
       <div className="px-4 py-5 sm:p-6">
         <div className="flex items-center justify-between mb-4">
-          <h3 className="text-lg font-medium text-white font-['Poppins']">Users & Outstanding Amounts</h3>
+          <h3 className="text-lg font-medium text-white">Users & Outstanding Amounts</h3>
           <button
             onClick={handleRefresh}
-            className="text-blue-400 hover:text-blue-300 text-sm font-['Poppins'] transition-colors"
+            className="text-sky-300 hover:text-sky-200 text-sm transition-colors"
           >
             Refresh
           </button>
@@ -144,23 +144,23 @@ export default function UsersTable() {
         
         {users.length === 0 ? (
           <div className="flex items-center justify-center h-32">
-            <div className="text-white/70 font-['Poppins']">No users found</div>
+            <div className="text-white/70">No users found</div>
           </div>
         ) : (
           <div className="overflow-x-auto">
             <table className="min-w-full">
               <thead>
-                <tr className="border-b border-white/20">
-                  <th className="text-left py-3 px-2 text-white/80 font-medium text-sm font-['Poppins']">
+                <tr className="border-b border-white/10">
+                  <th className="text-left py-3 px-2 text-xs font-medium uppercase tracking-wide text-blue-100/50">
                     Name
                   </th>
-                  <th className="text-left py-3 px-2 text-white/80 font-medium text-sm font-['Poppins']">
+                  <th className="text-left py-3 px-2 text-xs font-medium uppercase tracking-wide text-blue-100/50">
                     Email
                   </th>
-                  <th className="text-right py-3 px-2 text-white/80 font-medium text-sm font-['Poppins']">
+                  <th className="text-right py-3 px-2 text-xs font-medium uppercase tracking-wide text-blue-100/50">
                     Sessions
                   </th>
-                  <th className="text-right py-3 px-2 text-white/80 font-medium text-sm font-['Poppins']">
+                  <th className="text-right py-3 px-2 text-xs font-medium uppercase tracking-wide text-blue-100/50">
                     Amount Owed
                   </th>
                 </tr>
@@ -174,16 +174,16 @@ export default function UsersTable() {
                     transition={{ delay: index * 0.05 }}
                     className="border-b border-white/10 hover:bg-white/5 transition-colors"
                   >
-                    <td className="py-3 px-2 text-white font-['Poppins']">
+                    <td className="py-3 px-2 text-white">
                       {user.name}
                     </td>
-                    <td className="py-3 px-2 text-white/80 text-sm font-['Poppins']">
+                    <td className="py-3 px-2 text-sm text-blue-100/60">
                       {user.email}
                     </td>
-                    <td className="py-3 px-2 text-right text-white/80 text-sm font-['Poppins']">
+                    <td className="py-3 px-2 text-right text-sm text-blue-100/60">
                       {user.bookingCount}
                     </td>
-                    <td className="py-3 px-2 text-right text-white font-semibold font-['Poppins']">
+                    <td className="py-3 px-2 text-right font-semibold text-white">
                       ${user.totalOwed.toFixed(2)}
                     </td>
                   </motion.tr>
@@ -194,11 +194,11 @@ export default function UsersTable() {
         )}
         
         {users.length > 0 && (
-          <div className="mt-4 pt-4 border-t border-white/20">
-            <div className="flex justify-between items-center text-white/80 font-['Poppins']">
+          <div className="mt-4 pt-4 border-t border-white/10">
+            <div className="flex justify-between items-center text-blue-100/70">
               <span className="text-sm">Total Users: {users.length}</span>
               <span className="text-sm">
-                Total Outstanding: ${totalOutstanding.toFixed(2)}
+                Total Outstanding: <span className="font-semibold text-white">${totalOutstanding.toFixed(2)}</span>
               </span>
             </div>
           </div>

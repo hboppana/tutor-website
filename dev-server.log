@@ -1,0 +1,363 @@
+
+> tutor-website@0.1.0 dev
+> next dev --turbopack
+
+   ▲ Next.js 15.3.3 (Turbopack)
+   - Local:        http://localhost:3000
+   - Network:      http://192.168.56.1:3000
+   - Environments: .env.local
+
+ ✓ Starting...
+ ✓ Ready in 1781ms
+ ○ Compiling / ...
+ ✓ Compiled / in 2.3s
+ GET / 200 in 2690ms
+ ✓ Compiled /favicon.ico in 339ms
+ GET /favicon.ico?favicon.45db1c09.ico 200 in 645ms
+ ✓ Compiled in 207ms
+ ✓ Compiled / in 84ms
+ GET / 200 in 211ms
+ ✓ Compiled in 198ms
+ GET / 200 in 325ms
+ ✓ Compiled in 244ms
+ ✓ Compiled in 204ms
+ ✓ Compiled in 179ms
+ ✓ Compiled in 221ms
+ ✓ Compiled in 186ms
+ ✓ Compiled in 226ms
+ ⚠ Fast Refresh had to perform a full reload due to a runtime error.
+ ✓ Compiled in 200ms
+ ⨯ ReferenceError: scrollToConsult is not defined
+    at eval (app\page.tsx:366:35)
+    at Array.map (<anonymous>)
+    at Home (app\page.tsx:349:14)
+  364 |                     <span className="text-blue-100/50"> / hr</span>
+  365 |                   </span>
+> 366 |                   <button onClick={scrollToConsult} className="btn-primary">
+      |                                   ^
+  367 |                     Book Now
+  368 |                   </button>
+  369 |                 </div> {
+  digest: '30582176'
+}
+ GET / 500 in 416ms
+ GET /favicon.ico 200 in 329ms
+ ⚠ Fast Refresh had to perform a full reload due to a runtime error.
+ ✓ Compiled in 188ms
+ GET / 200 in 287ms
+ GET / 200 in 177ms
+ ✓ Compiled in 189ms
+ ✓ Compiled in 193ms
+ GET / 200 in 291ms
+ ○ Compiling /login ...
+ ✓ Compiled /login in 1007ms
+ GET /login 200 in 1167ms
+ ○ Compiling /signup ...
+ ✓ Compiled /signup in 827ms
+ GET /signup 200 in 942ms
+ ○ Compiling /dashboard/tutee ...
+ ✓ Compiled /dashboard/tutee in 770ms
+ GET /dashboard/tutee 200 in 864ms
+ ○ Compiling /dashboard/admin ...
+ ✓ Compiled /dashboard/admin in 772ms
+ GET /dashboard/admin 200 in 851ms
+ GET /login 200 in 129ms
+ ✓ Compiled /auth/callback in 439ms
+ GET /auth/callback?code=0eb21eda-8b3f-4a86-81cc-a922e122132b 307 in 833ms
+ ○ Compiling /dashboard ...
+ ✓ Compiled /dashboard in 552ms
+ GET /dashboard 200 in 650ms
+ GET /dashboard/admin 200 in 93ms
+ ✓ Compiled /api/admin-users-with-amounts in 379ms
+ GET /api/admin-users-with-amounts 200 in 859ms
+ GET /api/admin-users-with-amounts 200 in 243ms
+ GET /api/admin-users-with-amounts 200 in 268ms
+ GET /api/admin-users-with-amounts 200 in 230ms
+ GET /api/admin-users-with-amounts 200 in 215ms
+ GET /api/admin-users-with-amounts 200 in 351ms
+ GET /login 200 in 92ms
+ GET / 200 in 90ms
+ ✓ Compiled in 283ms
+ GET / 200 in 274ms
+ GET / 200 in 237ms
+ GET /favicon.ico?favicon.45db1c09.ico 200 in 366ms
+ ✓ Compiled in 278ms
+ GET /login 200 in 218ms
+ GET /auth/callback?code=4814406d-a792-48e1-b5d4-04fb67d32208 307 in 330ms
+ GET /dashboard 200 in 218ms
+ GET /dashboard/admin 200 in 171ms
+ GET /api/admin-users-with-amounts 200 in 388ms
+ GET /api/admin-users-with-amounts 200 in 231ms
+ GET /api/admin-users-with-amounts 200 in 242ms
+ GET /api/admin-users-with-amounts 200 in 257ms
+ GET /api/admin-users-with-amounts 200 in 477ms
+ GET /api/admin-users-with-amounts 200 in 568ms
+ GET /api/admin-users-with-amounts 200 in 396ms
+ GET / 200 in 237ms
+ GET /api/admin-users-with-amounts 200 in 426ms
+ GET /api/admin-users-with-amounts 200 in 405ms
+ GET /api/admin-users-with-amounts 200 in 328ms
+ GET /api/admin-users-with-amounts 200 in 324ms
+ GET /api/admin-users-with-amounts 200 in 499ms
+ GET /api/admin-users-with-amounts 200 in 399ms
+ GET /api/admin-users-with-amounts 200 in 390ms
+ GET /api/admin-users-with-amounts 200 in 861ms
+ GET /api/admin-users-with-amounts 200 in 682ms
+ GET /api/admin-users-with-amounts 200 in 480ms
+ GET /api/admin-users-with-amounts 200 in 687ms
+ GET /api/admin-users-with-amounts 200 in 760ms
+ GET /api/admin-users-with-amounts 200 in 556ms
+ GET /api/admin-users-with-amounts 200 in 274ms
+ GET /api/admin-users-with-amounts 200 in 530ms
+ GET /api/admin-users-with-amounts 200 in 454ms
+ GET /api/admin-users-with-amounts 200 in 700ms
+ GET /api/admin-users-with-amounts 200 in 513ms
+ GET /api/admin-users-with-amounts 200 in 433ms
+ GET /api/admin-users-with-amounts 200 in 444ms
+ GET /api/admin-users-with-amounts 200 in 292ms
+ GET /api/admin-users-with-amounts 200 in 335ms
+ GET /api/admin-users-with-amounts 200 in 403ms
+ GET /api/admin-users-with-amounts 200 in 421ms
+ GET /api/admin-users-with-amounts 200 in 537ms
+ ✓ Compiled in 251ms
+ GET /api/admin-users-with-amounts 200 in 291ms
+ ✓ Compiled in 170ms
+ GET /api/admin-users-with-amounts 200 in 441ms
+ GET /api/admin-users-with-amounts 200 in 394ms
+ GET /api/admin-users-with-amounts 200 in 695ms
+ GET /api/admin-users-with-amounts 200 in 338ms
+ GET /login 200 in 180ms
+ ✓ Compiled in 255ms
+ ✓ Compiled in 274ms
+ ✓ Compiled in 312ms
+ GET / 200 in 190ms
+ ✓ Compiled in 188ms
+ ✓ Compiled in 224ms
+ GET /signup 200 in 169ms
+ GET / 200 in 160ms
+ GET /login 200 in 168ms
+ GET /auth/callback?code=68e9a030-8bcf-4ce2-8712-6342e19ae648 307 in 303ms
+ ✓ Compiled in 214ms
+ GET /dashboard 200 in 219ms
+ GET /dashboard/admin 200 in 288ms
+ GET /api/admin-users-with-amounts 200 in 308ms
+ GET /api/admin-users-with-amounts 200 in 267ms
+ GET /api/admin-users-with-amounts 200 in 233ms
+ GET /api/admin-users-with-amounts 200 in 238ms
+ GET /api/admin-users-with-amounts 200 in 755ms
+ ✓ Compiled in 278ms
+ GET /api/admin-users-with-amounts 200 in 320ms
+ ✓ Compiled in 155ms
+ GET /api/admin-users-with-amounts 200 in 226ms
+ GET /api/admin-users-with-amounts 200 in 595ms
+ GET /api/admin-users-with-amounts 200 in 1849ms
+ GET /api/admin-users-with-amounts 200 in 887ms
+ GET /api/admin-users-with-amounts 200 in 571ms
+ GET / 200 in 130ms
+ GET /dashboard/tutee 200 in 357ms
+ GET /dashboard/admin 200 in 526ms
+ GET /api/admin-users-with-amounts 200 in 1104ms
+ GET /api/admin-users-with-amounts 200 in 623ms
+ GET /api/admin-users-with-amounts 200 in 1168ms
+ GET /api/admin-users-with-amounts 200 in 689ms
+ GET /api/admin-users-with-amounts 200 in 798ms
+ GET /login 200 in 217ms
+ GET /signup 200 in 174ms
+ GET /?code=73072902-9aca-4507-850d-eb4d290cd6da 200 in 265ms
+ GET /login 200 in 164ms
+ GET /dashboard 200 in 190ms
+ GET /dashboard/tutee 200 in 188ms
+ GET /dashboard/tutee 200 in 188ms
+ GET / 200 in 167ms
+ GET /login 200 in 170ms
+ GET /auth/callback?code=41d02c47-4b82-41e5-ad38-b8be51174cb6 307 in 338ms
+ GET /dashboard 200 in 240ms
+ GET /dashboard/admin 200 in 176ms
+ GET /api/admin-users-with-amounts 200 in 299ms
+ GET /api/admin-users-with-amounts 200 in 266ms
+ GET /api/admin-users-with-amounts 200 in 235ms
+ GET /api/admin-users-with-amounts 200 in 260ms
+ GET /api/admin-users-with-amounts 200 in 381ms
+ GET /api/admin-users-with-amounts 200 in 246ms
+ GET /api/admin-users-with-amounts 200 in 273ms
+ GET /api/admin-users-with-amounts 200 in 277ms
+ GET /api/admin-users-with-amounts 200 in 277ms
+ GET /api/admin-users-with-amounts 200 in 244ms
+ GET /api/admin-users-with-amounts 200 in 294ms
+ GET /api/admin-users-with-amounts 200 in 255ms
+ GET /api/admin-users-with-amounts 200 in 278ms
+ GET /api/admin-users-with-amounts 200 in 296ms
+ ✓ Compiled in 123ms
+ GET /api/admin-users-with-amounts 200 in 273ms
+ ✓ Compiled in 117ms
+ ✓ Compiled in 114ms
+ GET /api/admin-users-with-amounts 200 in 255ms
+ ✓ Compiled in 114ms
+ GET /api/admin-users-with-amounts 200 in 248ms
+ ✓ Compiled in 109ms
+ GET /api/admin-users-with-amounts 200 in 255ms
+ GET /api/admin-users-with-amounts 200 in 184ms
+ GET /api/admin-users-with-amounts 200 in 193ms
+ GET /api/admin-users-with-amounts 200 in 244ms
+ ✓ Compiled in 108ms
+ ✓ Compiled in 98ms
+ GET /api/admin-users-with-amounts 200 in 314ms
+ GET /api/admin-users-with-amounts 200 in 286ms
+ GET /api/admin-users-with-amounts 200 in 272ms
+ ✓ Compiled in 257ms
+ GET /api/admin-users-with-amounts 200 in 312ms
+ GET /api/admin-users-with-amounts 200 in 249ms
+ GET /api/admin-users-with-amounts 200 in 256ms
+ GET /api/admin-users-with-amounts 200 in 357ms
+ GET /api/admin-users-with-amounts 200 in 322ms
+ GET /api/admin-users-with-amounts 200 in 358ms
+ GET /api/admin-users-with-amounts 200 in 340ms
+ GET /api/admin-users-with-amounts 200 in 355ms
+ GET /api/admin-users-with-amounts 200 in 310ms
+ GET /api/admin-users-with-amounts 200 in 364ms
+ GET /api/admin-users-with-amounts 200 in 355ms
+ GET /dashboard/admin 200 in 255ms
+ GET /dashboard/tutee 200 in 227ms
+ GET /api/admin-users-with-amounts 200 in 319ms
+ GET /api/admin-users-with-amounts 200 in 355ms
+ GET /api/admin-users-with-amounts 200 in 356ms
+ GET / 200 in 285ms
+ GET /api/admin-users-with-amounts 200 in 277ms
+ GET /api/admin-users-with-amounts 200 in 261ms
+ GET /api/admin-users-with-amounts 200 in 483ms
+ GET /api/admin-users-with-amounts 200 in 250ms
+ GET /api/admin-users-with-amounts 200 in 410ms
+ GET /api/admin-users-with-amounts 200 in 391ms
+ GET /api/admin-users-with-amounts 200 in 265ms
+ GET /api/admin-users-with-amounts 200 in 276ms
+ GET /api/admin-users-with-amounts 200 in 406ms
+ GET /api/admin-users-with-amounts 200 in 381ms
+ GET /api/admin-users-with-amounts 200 in 288ms
+ GET /api/admin-users-with-amounts 200 in 262ms
+ ✓ Compiled in 179ms
+ GET /api/admin-users-with-amounts 200 in 305ms
+ GET /api/admin-users-with-amounts 200 in 332ms
+ GET /api/admin-users-with-amounts 200 in 280ms
+ GET /api/admin-users-with-amounts 200 in 238ms
+ GET /api/admin-users-with-amounts 200 in 278ms
+ GET /api/admin-users-with-amounts 200 in 296ms
+ GET /api/admin-users-with-amounts 200 in 295ms
+ GET /api/admin-users-with-amounts 200 in 368ms
+ GET /api/admin-users-with-amounts 200 in 324ms
+ GET /api/admin-users-with-amounts 200 in 289ms
+ GET /api/admin-users-with-amounts 200 in 273ms
+ GET /api/admin-users-with-amounts 200 in 256ms
+ GET /api/admin-users-with-amounts 200 in 263ms
+ GET /api/admin-users-with-amounts 200 in 254ms
+ GET /api/admin-users-with-amounts 200 in 358ms
+ GET /api/admin-users-with-amounts 200 in 352ms
+ GET /login 200 in 225ms
+ GET / 200 in 199ms
+ GET /api/admin-users-with-amounts 200 in 666ms
+ GET /api/admin-users-with-amounts 200 in 251ms
+ GET /login 200 in 177ms
+ GET /auth/callback?code=1d14a7a7-3ec4-4a7a-af58-60d3e209d9c7 307 in 380ms
+ GET /dashboard 200 in 229ms
+ GET /dashboard/admin 200 in 290ms
+ GET /api/admin-users-with-amounts 200 in 356ms
+ GET /api/admin-users-with-amounts 200 in 275ms
+ GET /api/admin-users-with-amounts 200 in 268ms
+ GET /api/admin-users-with-amounts 200 in 262ms
+ GET /api/admin-users-with-amounts 200 in 377ms
+ GET /api/admin-users-with-amounts 200 in 288ms
+ GET /api/admin-users-with-amounts 200 in 252ms
+ GET /api/admin-users-with-amounts 200 in 297ms
+ GET /api/admin-users-with-amounts 200 in 279ms
+ GET /api/admin-users-with-amounts 200 in 395ms
+ GET /api/admin-users-with-amounts 200 in 251ms
+ GET /api/admin-users-with-amounts 200 in 256ms
+ GET /api/admin-users-with-amounts 200 in 267ms
+ GET /api/admin-users-with-amounts 200 in 276ms
+ GET /api/admin-users-with-amounts 200 in 273ms
+ GET /api/admin-users-with-amounts 200 in 284ms
+ ✓ Compiled in 184ms
+ ✓ Compiled in 183ms
+ GET /api/admin-users-with-amounts 200 in 336ms
+ ✓ Compiled in 248ms
+ ✓ Compiled in 253ms
+ GET / 200 in 530ms
+ GET /login 200 in 192ms
+ GET / 200 in 170ms
+ GET /api/admin-users-with-amounts 200 in 322ms
+ GET /api/admin-users-with-amounts 200 in 771ms
+ ✓ Compiled in 280ms
+ ✓ Compiled / in 48ms
+ GET / 200 in 2633ms
+ GET / 200 in 2645ms
+ GET / 200 in 165ms
+ ✓ Compiled /dashboard/admin in 73ms
+ GET /dashboard/admin 200 in 2922ms
+ GET / 200 in 223ms
+ GET / 200 in 221ms
+ GET /dashboard/admin 200 in 167ms
+ GET / 200 in 172ms
+ GET / 200 in 168ms
+ GET /dashboard/admin 200 in 163ms
+ GET / 200 in 155ms
+ GET / 200 in 137ms
+ GET /dashboard/admin 200 in 147ms
+ GET / 200 in 156ms
+ GET / 200 in 163ms
+ GET /dashboard/admin 200 in 163ms
+ GET / 200 in 187ms
+ GET / 200 in 180ms
+ GET /dashboard/admin 200 in 177ms
+ GET / 200 in 172ms
+ GET / 200 in 155ms
+ GET /dashboard/admin 200 in 153ms
+ GET / 200 in 147ms
+ GET /dashboard/admin 200 in 144ms
+ ✓ Compiled /icon.svg in 415ms
+ GET /icon.svg?icon.af55e32e.svg 200 in 703ms
+ GET /icon.svg?icon.af55e32e.svg 200 in 344ms
+ GET /api/admin-users-with-amounts 200 in 452ms
+ ✓ Compiled /dashboard/admin in 53ms
+ GET /dashboard/admin 200 in 1496ms
+ ✓ Compiled / in 103ms
+ GET / 200 in 1682ms
+ GET / 200 in 1690ms
+ GET / 200 in 517ms
+ GET /dashboard/admin 200 in 498ms
+ GET / 200 in 530ms
+ GET /dashboard/admin 200 in 537ms
+ ✓ Compiled /login in 55ms
+ GET /login 200 in 158ms
+ GET /icon.svg?icon.af55e32e.svg 200 in 376ms
+ GET /icon.svg?icon.af55e32e.svg 200 in 385ms
+ GET /icon.svg?icon.af55e32e.svg 200 in 321ms
+ GET /icon.svg?icon.af55e32e.svg 200 in 295ms
+ GET / 200 in 190ms
+ GET /icon.svg 200 in 338ms
+ GET / 200 in 180ms
+ ✓ Compiled in 168ms
+ ✓ Compiled /login in 123ms
+ GET /login 200 in 285ms
+ GET / 200 in 405ms
+ GET / 200 in 378ms
+ GET /login 200 in 313ms
+ GET / 200 in 229ms
+ GET / 200 in 255ms
+ GET /login 200 in 208ms
+ GET / 200 in 247ms
+ GET / 200 in 258ms
+ GET /login 200 in 222ms
+ GET / 200 in 200ms
+ GET / 200 in 167ms
+ GET /login 200 in 168ms
+ GET / 200 in 161ms
+ GET / 200 in 158ms
+ GET /login 200 in 168ms
+ GET / 200 in 157ms
+ GET / 200 in 189ms
+ GET /icon.svg?icon.39626af6.svg 200 in 432ms
+ GET /icon.svg?icon.af55e32e.svg 200 in 355ms
+ GET /icon.svg 200 in 330ms
+ GET /icon.svg 200 in 328ms
+ GET / 200 in 281ms
+ GET /icon.svg?icon.af55e32e.svg 200 in 376ms
+ ✓ Compiled in 965ms

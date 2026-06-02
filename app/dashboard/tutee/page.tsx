@@ -115,49 +115,20 @@ export default function TuteeDashboard() {
   }
 
   return (
-    <div className="moving-gradient font-['Poppins']">
-      {/* GridLines */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute inset-0" style={{
-          backgroundImage: `
-            linear-gradient(to right, rgba(0, 0, 0, 0.15) 1px, transparent 1px),
-            linear-gradient(to bottom, rgba(0, 0, 0, 0.15) 1px, transparent 1px)
-          `,
-          backgroundSize: '50px 50px',
-          maskImage: 'linear-gradient(to bottom, transparent, rgba(0, 0, 0, 0.8), transparent)'
-        }} />
-      </div>
-
-      {/* Animated Waves */}
-      <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute -bottom-1 left-0 right-0">
-          <svg className="relative w-full h-[100px] animate-wave" viewBox="0 0 1440 320" preserveAspectRatio="none">
-            <path
-              fill="rgba(59, 130, 246, 0.1)"
-              d="M0,192L48,197.3C96,203,192,213,288,229.3C384,245,480,267,576,250.7C672,235,768,181,864,181.3C960,181,1056,235,1152,234.7C1248,235,1344,181,1392,154.7L1440,128L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"
-            ></path>
-          </svg>
-        </div>
-        <div className="absolute -bottom-1 left-0 right-0">
-          <svg className="relative w-full h-[100px] animate-wave-delayed" viewBox="0 0 1440 320" preserveAspectRatio="none">
-            <path
-              fill="rgba(59, 130, 246, 0.05)"
-              d="M0,64L48,80C96,96,192,128,288,128C384,128,480,96,576,90.7C672,85,768,107,864,128C960,149,1056,171,1152,165.3C1248,160,1344,128,1392,112L1440,96L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"
-            ></path>
-          </svg>
-        </div>
-      </div>
+    <div className="moving-gradient">
+      {/* Ambient glow */}
+      <div className="ambient-glow" />
 
       <nav className="relative z-10 pt-6">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between h-16">
             <div className="flex items-center">
-              <h1 className="text-2xl md:text-3xl font-semibold text-white font-['Poppins'] tracking-tight">Welcome, {username}!</h1>
+              <h1 className="font-display text-2xl md:text-3xl font-medium text-white tracking-tight">Welcome, <span className="italic text-sky-300">{username}</span></h1>
             </div>
             <div className="flex items-center">
               <button
                 onClick={handleLogout}
-                className="btn-back font-['Poppins']"
+                className="btn-back"
               >
                 <Image
                   src="/logout-icon.svg"
@@ -184,16 +155,16 @@ export default function TuteeDashboard() {
                 className="glass-card"
               >
                 <div className="px-4 py-5 sm:p-6">
-                  <h3 className="text-lg font-medium text-white font-['Poppins']">Amount Owed</h3>
-                  <div className="mt-4 text-5xl font-semibold text-white tracking-tight font-['Poppins']">
+                  <h3 className="text-sm font-medium uppercase tracking-wide text-blue-100/60">Amount Owed</h3>
+                  <div className="mt-4 font-display text-5xl font-medium text-white tracking-tight">
                     ${totalOwed.toFixed(2)}
                   </div>
-                  <div className="mt-2 text-sm text-white/70 font-['Poppins']">
+                  <div className="mt-2 text-sm text-blue-100/60">
                     From {bookingCount} confirmed session{bookingCount !== 1 ? 's' : ''}
                   </div>
                   <button
                     onClick={handlePayNow}
-                    className="mt-6 w-full bg-white/10 hover:bg-white/20 text-white font-medium py-2.5 px-4 rounded-lg transition-all duration-200 font-['Poppins'] text-base border border-white/20 backdrop-blur-sm flex items-center justify-center gap-2"
+                    className="btn-primary mt-6 w-full"
                     disabled={isLoading}
                   >
                     <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
@@ -212,11 +183,9 @@ export default function TuteeDashboard() {
                 className="glass-card"
               >
                 <div className="px-4 py-5 sm:p-6">
-                  <h3 className="text-lg font-medium text-white mb-4 font-['Poppins']">Notes</h3>
-                  <div className="bg-white/10 rounded-lg p-4 min-h-[150px] flex items-center justify-center">
-                    <div className="text-center">
-                      <div className="text-white/80 text-lg font-['Poppins']">New Feature Coming Soon! 🚀</div>
-                    </div>
+                  <h3 className="text-sm font-medium uppercase tracking-wide text-blue-100/60 mb-4">Notes</h3>
+                  <div className="flex min-h-[150px] items-center justify-center rounded-xl border border-white/10 bg-white/[0.04] p-4">
+                    <div className="text-center text-lg text-blue-100/60">New Feature Coming Soon! 🚀</div>
                   </div>
                 </div>
               </motion.div>
@@ -230,25 +199,25 @@ export default function TuteeDashboard() {
               className="md:col-span-2 flex items-center justify-center"
             >
               <div className="px-4 py-5 sm:p-6 w-full max-w-lg">
-                <h3 className="text-3xl md:text-4xl font-medium text-white mb-6 font-['Poppins']">Schedule Management</h3>
-                
+                <h3 className="font-display text-3xl md:text-4xl font-medium text-white mb-6">Schedule Management</h3>
+
                 {/* Important Note */}
-                <div className="mb-6 p-4 bg-blue-500/10 border border-blue-500/20 rounded-lg">
+                <div className="mb-6 rounded-xl border border-sky-400/20 bg-sky-500/[0.08] p-4">
                   <div className="flex items-start gap-3">
-                    <svg className="w-5 h-5 text-blue-400 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                    <svg className="mt-0.5 h-5 w-5 flex-shrink-0 text-sky-300" fill="currentColor" viewBox="0 0 20 20">
                       <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd" />
                     </svg>
                     <div>
-                      <h4 className="text-blue-300 font-medium text-sm mb-1">Important Booking Note</h4>
-                      <p className="text-blue-200 text-xs leading-relaxed">
-                        When booking a session, please set the email to whoever will actually join the meeting. 
-                        <strong> You will still be billed for the session</strong> regardless of the attendee email.
+                      <h4 className="mb-1 text-sm font-medium text-sky-200">Important booking note</h4>
+                      <p className="text-xs leading-relaxed text-blue-100/70">
+                        When booking a session, please set the email to whoever will actually join the meeting.
+                        <strong className="font-semibold text-white"> You will still be billed for the session</strong> regardless of the attendee email.
                       </p>
                     </div>
                   </div>
                 </div>
-                
-                <div className="bg-gradient-to-br from-blue-500/10 to-indigo-500/10 rounded-xl overflow-hidden border border-white/10 shadow-2xl h-[400px]">
+
+                <div className="h-[400px] overflow-hidden rounded-2xl border border-white/10 bg-white/[0.02]">
                   <ScheduleManagementCard />
                 </div>
               </div>

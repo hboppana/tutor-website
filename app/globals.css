@@ -2,8 +2,12 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #0a1628;
+  --foreground: #f8fafc;
+  --navy: #0a1628;
+  --navy-soft: #0e1d33;
+  --accent: #7dd3fc;
+  --accent-strong: #38bdf8;
   --primary-blue: #2563eb;
   --primary-blue-dark: #1d4ed8;
   --gray-100: #f3f4f6;
@@ -16,13 +20,6 @@
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --font-sans: var(--font-poppins), system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
 }
 
 html {
@@ -44,9 +41,14 @@ body {
   overflow-x: hidden;
 }
 
+/* Display serif utility */
+.font-display {
+  font-family: var(--font-playfair), Georgia, 'Times New Roman', serif;
+}
+
 /* Gradient text utility */
 .gradient-text {
-  background: linear-gradient(to right, var(--primary-blue), var(--primary-blue-dark));
+  background: linear-gradient(to right, var(--accent), #ffffff);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
@@ -64,27 +66,15 @@ body {
 @tailwind utilities;
 
 @keyframes wave {
-  0% {
-    transform: translateX(0);
-  }
-  50% {
-    transform: translateX(-25%);
-  }
-  100% {
-    transform: translateX(-50%);
-  }
+  0% { transform: translateX(0); }
+  50% { transform: translateX(-25%); }
+  100% { transform: translateX(-50%); }
 }
 
 @keyframes wave-delayed {
-  0% {
-    transform: translateX(0);
-  }
-  50% {
-    transform: translateX(25%);
-  }
-  100% {
-    transform: translateX(50%);
-  }
+  0% { transform: translateX(0); }
+  50% { transform: translateX(25%); }
+  100% { transform: translateX(50%); }
 }
 
 .animate-wave {
@@ -97,41 +87,46 @@ body {
 
 /* Common Components */
 @layer components {
-  /* Background */
+  /* Background — deep navy editorial canvas */
   .moving-gradient {
-    @apply relative min-h-screen bg-gradient-to-br from-blue-600 via-blue-400 to-blue-600 overflow-hidden;
+    @apply relative min-h-screen overflow-hidden bg-[#0a1628];
+  }
+
+  /* Ambient glow used on dark sections */
+  .ambient-glow {
+    @apply pointer-events-none absolute left-1/2 top-[-15%] h-[600px] w-[1000px] -translate-x-1/2 rounded-full bg-blue-500/10 blur-[140px];
   }
 
   /* Buttons */
   .btn-primary {
-    @apply bg-white text-blue-600 px-6 sm:px-10 py-3 sm:py-4 rounded-lg text-base sm:text-lg font-normal hover:bg-blue-50 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5;
+    @apply inline-flex items-center justify-center bg-white text-[#0a1628] px-6 sm:px-7 py-3 sm:py-3.5 rounded-full text-base font-medium hover:bg-blue-50 transition-all duration-300 hover:-translate-y-0.5 disabled:opacity-60 disabled:hover:translate-y-0;
   }
 
   .btn-secondary {
-    @apply bg-transparent text-white border-2 border-white px-6 sm:px-10 py-3 sm:py-4 rounded-lg text-base sm:text-lg font-normal hover:bg-white/10 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5;
+    @apply inline-flex items-center justify-center bg-transparent text-white border border-white/20 px-6 sm:px-7 py-3 sm:py-3.5 rounded-full text-base font-medium hover:bg-white/5 transition-all duration-300 hover:-translate-y-0.5 disabled:opacity-60 disabled:hover:translate-y-0;
   }
 
   .btn-back {
-    @apply flex items-center gap-2 px-3 sm:px-4 py-2 bg-white/10 backdrop-blur-sm text-white rounded-lg hover:bg-white/20 transition-all duration-300 border border-white/20 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 cursor-pointer;
+    @apply inline-flex items-center gap-2 px-4 py-2 text-blue-100/70 rounded-full hover:text-white hover:bg-white/5 transition-all duration-300 cursor-pointer;
   }
 
   /* Form Elements */
   .form-input {
-    @apply w-full px-3 sm:px-4 py-2 sm:py-3 rounded-lg bg-white/10 border border-white/20 text-white placeholder-blue-100/50 focus:outline-none focus:ring-2 focus:ring-white/50 focus:border-transparent transition-all backdrop-blur-sm text-base sm:text-lg;
+    @apply w-full px-4 py-3 rounded-xl bg-white/[0.04] border border-white/10 text-white placeholder-blue-100/40 focus:outline-none focus:ring-2 focus:ring-sky-300/40 focus:border-transparent transition-all text-base;
   }
 
   .form-label {
-    @apply block text-sm sm:text-base font-normal text-white mb-2;
+    @apply block text-sm font-medium text-blue-100/80 mb-2;
   }
 
   /* Cards */
   .glass-card {
-    @apply bg-white/10 backdrop-blur-sm p-4 sm:p-8 rounded-2xl shadow-xl border border-white/20 relative overflow-hidden;
+    @apply bg-white/[0.04] backdrop-blur-sm p-6 sm:p-8 rounded-2xl border border-white/10 relative overflow-hidden;
   }
 
   /* Dividers */
   .divider {
-    @apply relative;
+    @apply relative my-2;
   }
 
   .divider::before {
@@ -140,37 +135,38 @@ body {
   }
 
   .divider::after {
-    @apply w-full border-t border-white/20;
+    @apply w-full border-t border-white/10;
     content: '';
   }
 
   .divider-text {
-    @apply relative flex justify-center text-sm sm:text-base;
+    @apply relative flex justify-center text-sm;
   }
 
   .divider-text span {
-    @apply px-2 bg-transparent text-blue-100;
+    @apply px-3 bg-transparent text-blue-100/50;
   }
 
   /* Navigation */
   .nav-button {
-    @apply px-4 sm:px-6 py-2 bg-white/10 backdrop-blur-sm text-white font-normal rounded-lg hover:bg-white/20 transition-colors border border-white/20 text-sm sm:text-base;
+    @apply px-4 sm:px-5 py-2 text-blue-100/80 rounded-full hover:text-white hover:bg-white/5 transition-colors text-sm font-medium;
   }
 
   .nav-button-primary {
-    @apply px-4 sm:px-6 py-2 bg-white text-blue-600 rounded-lg font-normal hover:bg-blue-50 transition-colors shadow-lg text-sm sm:text-base;
+    @apply px-4 sm:px-5 py-2 bg-white text-[#0a1628] rounded-full font-medium hover:bg-blue-50 transition-colors text-sm;
   }
 
   /* Auth Pages Specific */
   .auth-title {
-    @apply text-3xl sm:text-4xl md:text-5xl font-normal tracking-tight mb-4 sm:mb-6 leading-tight text-white;
+    @apply text-3xl sm:text-4xl font-medium tracking-tight mb-2 text-white;
+    font-family: var(--font-playfair), Georgia, serif;
   }
 
   .auth-subtitle {
-    @apply text-lg sm:text-xl text-blue-100 mb-6 sm:mb-8 leading-relaxed font-normal italic;
+    @apply text-base sm:text-lg text-blue-100/60 mb-8 leading-relaxed;
   }
 
   .auth-link {
-    @apply text-blue-100 hover:text-white font-normal transition-colors;
+    @apply text-sky-300 hover:text-sky-200 font-medium transition-colors;
   }
 }
