@@ -361,3 +361,143 @@
  GET / 200 in 281ms
  GET /icon.svg?icon.af55e32e.svg 200 in 376ms
  ✓ Compiled in 965ms
+ ✓ Compiled /dashboard in 125ms
+ GET /dashboard 200 in 389ms
+ ✓ Compiled /dashboard/tutee in 152ms
+ GET /dashboard/tutee 200 in 432ms
+ GET /dashboard/tutee 200 in 234ms
+ ○ Compiling /api/bookings ...
+ ✓ Compiled /api/bookings in 853ms
+Received booking request: {
+  type: 'create',
+  bookingData: {
+    cal_booking_id: 20385912,
+    event_type: 'Regular Tutoring Session',
+    date: '2026-06-02T22:00:00.000Z',
+    duration: 60,
+    organizer_name: 'Hemanshu Boppana',
+    organizer_email: 'hboppana01@gmail.com',
+    organizer_timezone: 'America/Chicago',
+    attendee_name: 'Hemanshu Boppana',
+    attendee_email: 'hboppana@ufl.edu',
+    attendee_timezone: 'America/Chicago',
+    billing_email: 'hboppana@ufl.edu',
+    status: 'confirmed'
+  }
+}
+Received booking request: {
+  type: 'create',
+  bookingData: {
+    cal_booking_id: 20385912,
+    event_type: 'Regular Tutoring Session',
+    date: '2026-06-02T22:00:00.000Z',
+    duration: 60,
+    organizer_name: 'Hemanshu Boppana',
+    organizer_email: 'hboppana01@gmail.com',
+    organizer_timezone: 'America/Chicago',
+    attendee_name: 'Hemanshu Boppana',
+    attendee_email: 'hboppana@ufl.edu',
+    attendee_timezone: 'America/Chicago',
+    billing_email: 'hboppana@ufl.edu',
+    status: 'confirmed'
+  }
+}
+Received booking request: {
+  type: 'create',
+  bookingData: {
+    cal_booking_id: 20385912,
+    event_type: 'Regular Tutoring Session',
+    date: '2026-06-02T22:00:00.000Z',
+    duration: 60,
+    organizer_name: 'Hemanshu Boppana',
+    organizer_email: 'hboppana01@gmail.com',
+    organizer_timezone: 'America/Chicago',
+    attendee_name: 'Hemanshu Boppana',
+    attendee_email: 'hboppana@ufl.edu',
+    attendee_timezone: 'America/Chicago',
+    billing_email: 'hboppana@ufl.edu',
+    status: 'confirmed'
+  }
+}
+Received booking request: {
+  type: 'create',
+  bookingData: {
+    cal_booking_id: 20385912,
+    event_type: 'Regular Tutoring Session',
+    date: '2026-06-02T22:00:00.000Z',
+    duration: 60,
+    organizer_name: 'Hemanshu Boppana',
+    organizer_email: 'hboppana01@gmail.com',
+    organizer_timezone: 'America/Chicago',
+    attendee_name: 'Hemanshu Boppana',
+    attendee_email: 'hboppana@ufl.edu',
+    attendee_timezone: 'America/Chicago',
+    billing_email: 'hboppana@ufl.edu',
+    status: 'confirmed'
+  }
+}
+ POST /api/bookings 200 in 1334ms
+Booking already exists (race condition), skipping: 20385912
+ POST /api/bookings 200 in 1294ms
+Booking already exists (race condition), skipping: 20385912
+ POST /api/bookings 200 in 1408ms
+Booking already exists (race condition), skipping: 20385912
+ POST /api/bookings 200 in 1253ms
+ ○ Compiling /api/create-checkout-session ...
+ ✓ Compiled /api/create-checkout-session in 921ms
+ POST /api/create-checkout-session 200 in 1754ms
+ GET /dashboard/tutee?canceled=true 200 in 472ms
+ GET /login 200 in 295ms
+ GET /login 200 in 198ms
+ ✓ Compiled in 5.5s
+ ⨯ ./app/icon.png
+Processing image failed
+unable to decode image data
+
+Caused by:
+- Format error decoding Png: Invalid PNG signature.
+- Invalid PNG signature.
+
+
+ ○ Compiling /_error ...
+ ✓ Compiled /_error in 1797ms
+ GET / 500 in 6821ms
+ ⨯ ./app/icon.png
+Processing image failed
+unable to decode image data
+
+Caused by:
+- Format error decoding Png: Invalid PNG signature.
+- Invalid PNG signature.
+
+
+ GET / 500 in 158ms
+ ⨯ ./app/icon.png
+Processing image failed
+unable to decode image data
+
+Caused by:
+- Format error decoding Png: Invalid PNG signature.
+- Invalid PNG signature.
+
+
+ GET / 500 in 150ms
+ ⚠ Fast Refresh had to perform a full reload when ./node_modules/next/dist/shared/lib/router/router.js changed. Read more: https://nextjs.org/docs/messages/fast-refresh-reload
+ ✓ Compiled in 1226ms
+ ✓ Compiled / in 235ms
+ GET / 200 in 759ms
+ GET /icon.svg?icon.39626af6.svg 200 in 385ms
+ GET / 200 in 276ms
+ ✓ Compiled /login in 72ms
+ GET /login 200 in 187ms
+ ✓ Compiled /dashboard in 100ms
+ GET /dashboard 200 in 272ms
+ ✓ Compiled /dashboard/tutee in 96ms
+ GET /dashboard/tutee 200 in 278ms
+ GET /dashboard/tutee 200 in 267ms
+ ✓ Compiled in 296ms
+ GET / 200 in 291ms
+ GET /api/bookings 405 in 377ms
+ ○ Compiling /api/webhooks/cal ...
+ ✓ Compiled /api/webhooks/cal in 1010ms
+ GET /api/webhooks/cal 405 in 1107ms

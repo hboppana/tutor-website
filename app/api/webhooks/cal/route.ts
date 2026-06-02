@@ -67,28 +67,17 @@ export async function POST(req: Request) {
         const { bookingId, rescheduleId, startTime, endTime } = eventPayload;
         const duration = (new Date(endTime).getTime() - new Date(startTime).getTime()) / (1000 * 60);
         console.log('Handling BOOKING_RESCHEDULED:', { bookingId, rescheduleId, startTime, endTime, duration });
-        // First, delete the old booking
+        // Update the existing booking in place so the original payer (billing_email) is
+        // preserved. The webhook has no parent/auth context, so we must not re-derive it.
         await fetch(`${baseUrl}/api/bookings`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
           },
           body: JSON.stringify({
-            type: 'delete',
+            type: 'reschedule',
             bookingData: {
-              cal_booking_id: rescheduleId
-            }
-          })
-        });
-        // Then create a new booking with the rescheduled details
-        await fetch(`${baseUrl}/api/bookings`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            type: 'create',
-            bookingData: {
+              old_cal_booking_id: rescheduleId,
               cal_booking_id: bookingId,
               date: new Date(startTime).toISOString(),
               duration,
@@ -99,7 +88,6 @@ export async function POST(req: Request) {
               attendee_name: eventPayload.attendees[0].name,
               attendee_email: eventPayload.attendees[0].email,
               attendee_timezone: eventPayload.attendees[0].timeZone,
-              billing_email: eventPayload.attendees[0].email,
               status: 'confirmed'
             }
           })

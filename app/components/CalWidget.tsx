@@ -164,39 +164,9 @@ export default function CalWidget({
         }
       });
 
-      // Handle booking rescheduling
-      cal("on", {
-        action: "rescheduleBookingSuccessful",
-        callback: async (e: any) => {
-          try {
-            const bookingData = e.detail;
-            const {
-              data: {
-                booking,
-                date,
-                duration
-              }
-            } = bookingData;
-
-            await fetch('/api/bookings', {
-              method: 'POST',
-              headers: {
-                'Content-Type': 'application/json',
-              },
-              body: JSON.stringify({
-                type: 'reschedule',
-                bookingData: {
-                  cal_booking_id: booking.id,
-                  date: new Date(date).toISOString(),
-                  duration
-                }
-              })
-            });
-          } catch {
-            // Silent error handling
-          }
-        }
-      });
+      // Reschedules are handled server-side by the Cal.com webhook
+      // (BOOKING_RESCHEDULED -> /api/bookings type 'reschedule'), which updates the
+      // existing row in place and preserves the original payer's billing_email.
     })();
   }, [namespace, onBookingSuccess]);
 
